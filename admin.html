@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No-Code Admin CMS | Sonu Choudhary 3D Portfolio</title>
+  
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Admin CMS Stylesheet -->
+  <link rel="stylesheet" href="css/admin.css" />
+
+  <!-- Supabase JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-body">
+
+  <!-- 1. DUAL AUTHENTICATION LOCK GATE -->
+  <div id="auth-gate">
+    <div class="auth-card">
+      <div class="auth-logo">SC ADMIN CMS</div>
+      <p class="auth-subtitle">Zero-Code Management Suite for Sonu Choudhary</p>
+
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" data-auth-mode="pin">
+          <i class="fa-solid fa-key"></i> 4-Digit Master PIN
+        </button>
+        <button class="auth-tab-btn" data-auth-mode="email">
+          <i class="fa-solid fa-cloud"></i> Supabase Cloud Auth
+        </button>
+      </div>
+
+      <!-- PIN Auth Panel -->
+      <div id="authPanel-pin" class="auth-form-panel active">
+        <p style="font-size: 0.85rem; color: var(--admin-text-muted); text-align: center;">
+          Enter your 4-digit Master Security PIN (Default: <strong>2558</strong>):
+        </p>
+        <form id="pinAuthForm">
+          <div class="pin-inputs-row">
+            <input type="password" maxlength="1" class="pin-digit" autofocus />
+            <input type="password" maxlength="1" class="pin-digit" />
+            <input type="password" maxlength="1" class="pin-digit" />
+            <input type="password" maxlength="1" class="pin-digit" />
+          </div>
+          <button type="submit" class="btn-auth-submit">
+            <i class="fa-solid fa-lock-open"></i> Unlock Dashboard
+          </button>
+        </form>
+      </div>
+
+      <!-- Supabase Cloud Email Auth Panel -->
+      <div id="authPanel-email" class="auth-form-panel">
+        <form id="emailAuthForm" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="admin-input-group">
+            <label class="admin-label">Admin Email</label>
+            <input type="email" id="authEmail" class="admin-input" placeholder="Sonu25580@gmail.com" required />
+          </div>
+          <div class="admin-input-group">
+            <label class="admin-label">Cloud Password</label>
+            <input type="password" id="authPassword" class="admin-input" placeholder="••••••••••••" required />
+          </div>
+          <button type="submit" class="btn-auth-submit">
+            <i class="fa-solid fa-cloud-arrow-up"></i> Sign In to Supabase
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. ADMIN SIDEBAR NAVIGATION -->
+  <aside class="admin-sidebar" id="adminSidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-cubes-stacked" style="color: var(--admin-primary);"></i>
+        <span>SC CMS STUDIO</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu">
+      <div class="menu-category-title">Core Management</div>
+      <button class="sidebar-item active" data-tab="profile">
+        <i class="fa-solid fa-user-astronaut"></i>
+        <span>Profile & Socials</span>
+      </button>
+      <button class="sidebar-item" data-tab="projects">
+        <i class="fa-solid fa-layer-group"></i>
+        <span>Projects Showcase</span>
+      </button>
+      <button class="sidebar-item" data-tab="services">
+        <i class="fa-solid fa-cube"></i>
+        <span>Services & Pricing</span>
+      </button>
+      <button class="sidebar-item" data-tab="skills">
+        <i class="fa-solid fa-code"></i>
+        <span>Skills Matrix</span>
+      </button>
+      <button class="sidebar-item" data-tab="experience">
+        <i class="fa-solid fa-timeline"></i>
+        <span>Career Timeline</span>
+      </button>
+      <button class="sidebar-item" data-tab="reviews">
+        <i class="fa-solid fa-star"></i>
+        <span>Client Reviews</span>
+      </button>
+      <button class="sidebar-item" data-tab="inquiries">
+        <i class="fa-solid fa-inbox"></i>
+        <span>Inquiries CRM</span>
+        <span class="sidebar-badge" id="inquiriesBadge">0</span>
+      </button>
+
+      <div class="menu-category-title">Studio & Tools</div>
+      <button class="sidebar-item" data-tab="theme">
+        <i class="fa-solid fa-palette"></i>
+        <span>Theme & Security</span>
+      </button>
+      <button class="sidebar-item" data-tab="compressor">
+        <i class="fa-solid fa-file-image"></i>
+        <span>Image Compressor</span>
+      </button>
+      <button class="sidebar-item" data-tab="supabase">
+        <i class="fa-solid fa-database"></i>
+        <span>Supabase & Backup</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <a href="index.html" class="btn-sidebar-action" target="_blank" title="View Live Portfolio">
+        <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Site
+      </a>
+      <button id="adminLogoutBtn" class="btn-sidebar-action" title="Lock Dashboard">
+        <i class="fa-solid fa-right-from-bracket"></i> Lock
+      </button>
+    </div>
+  </aside>
+
+  <!-- 3. MAIN DASHBOARD CONTENT AREA -->
+  <main class="admin-main">
+    <!-- Top HUD Bar -->
+    <header class="admin-topbar">
+      <div class="topbar-left">
+        <h1 class="page-title" id="adminPageTitle">Profile & Socials</h1>
+        <div id="adminCloudStatus" class="cloud-status-indicator">
+          <span class="status-dot"></span> Checking Cloud...
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <a href="index.html" target="_blank" class="btn-view-site">
+          <i class="fa-solid fa-globe"></i> View Live Site
+        </a>
+      </div>
+    </header>
+
+    <!-- Tab Panels Container -->
+    <div class="dashboard-content">
+
+      <!-- TAB 1: PROFILE & SOCIALS -->
+      <section id="tabPanel-profile" class="admin-tab-panel active">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Personal Identity & Social Hub</h2>
+            <p>Update your personal information, multi-domain titles, contacts, and resume.</p>
+          </div>
+        </div>
+
+        <form id="profileCmsForm" style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
+          <div class="modal-grid">
+            <div class="admin-input-group">
+              <label class="admin-label">Full Name</label>
+              <input type="text" id="profName" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Professional Headline Title</label>
+              <input type="text" id="profTitle" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Dynamic Typing Roles (comma-separated)</label>
+              <input type="text" id="profRoles" class="admin-input" placeholder="3D Motion & VFX Artist, UI/UX Designer, Graphics Artist, Web Developer" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Hero Tagline</label>
+              <input type="text" id="profTagline" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Comprehensive Bio</label>
+              <textarea id="profBio" class="admin-textarea" rows="4"></textarea>
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Direct Phone 1</label>
+              <input type="text" id="profPhone1" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Direct Phone 2</label>
+              <input type="text" id="profPhone2" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">WhatsApp Number (with country code)</label>
+              <input type="text" id="profWhatsApp" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Official Email</label>
+              <input type="email" id="profEmail" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Location / Base</label>
+              <input type="text" id="profLocation" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Resume PDF URL</label>
+              <input type="text" id="profResumeUrl" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Avatar Image URL</label>
+              <input type="text" id="profAvatar" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Hero Showcase Image URL</label>
+              <input type="text" id="profHeroImg" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Behance Profile URL</label>
+              <input type="url" id="profBehance" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Dribbble Profile URL</label>
+              <input type="url" id="profDribbble" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">GitHub Profile URL</label>
+              <input type="url" id="profGithub" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">LinkedIn Profile URL</label>
+              <input type="url" id="profLinkedin" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Instagram Profile URL</label>
+              <input type="url" id="profInstagram" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">YouTube Channel URL</label>
+              <input type="url" id="profYoutube" class="admin-input" />
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+            <button type="submit" class="btn-action-primary">
+              <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- TAB 2: PROJECTS CMS -->
+      <section id="tabPanel-projects" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Showcase Projects Manager</h2>
+            <p>Add, edit, reorder, or feature portfolio projects across all 5 domains.</p>
+          </div>
+          <button id="btnAddProject" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add New Project
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Thumbnail</th>
+                <th>Project Title</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Featured</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: SERVICES CMS -->
+      <section id="tabPanel-services" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Services & Pricing Packages</h2>
+            <p>Configure client service offerings, pricing tiers, delivery times, and features.</p>
+          </div>
+          <button id="btnAddService" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add New Service
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Icon</th>
+                <th>Service Title</th>
+                <th>Category</th>
+                <th>Starting Price</th>
+                <th>Turnaround</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="servicesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 4: SKILLS CMS -->
+      <section id="tabPanel-skills" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Technical & Visual Skills Matrix</h2>
+            <p>Manage skill proficiencies, category clusters, and FontAwesome icons.</p>
+          </div>
+          <button id="btnAddSkill" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add New Skill
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Icon</th>
+                <th>Skill Name</th>
+                <th>Category</th>
+                <th>Proficiency</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="skillsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 5: EXPERIENCE CMS -->
+      <section id="tabPanel-experience" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Career Milestones & Leadership Timeline</h2>
+            <p>Document leadership roles, agency tenures, and freelance achievements.</p>
+          </div>
+          <button id="btnAddExp" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add Milestone
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Role / Position</th>
+                <th>Company / Agency</th>
+                <th>Period</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="expTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 6: REVIEWS CMS -->
+      <section id="tabPanel-reviews" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Client Testimonials Moderation</h2>
+            <p>Approve, edit, or add client reviews and 5-star ratings.</p>
+          </div>
+          <button id="btnAddReview" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add Review
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Avatar</th>
+                <th>Client Name</th>
+                <th>Company</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="reviewsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 7: INQUIRIES & LEADS CRM -->
+      <section id="tabPanel-inquiries" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Inquiries & Leads CRM</h2>
+            <p>View client inquiries submitted through the WhatsApp estimator bot.</p>
+          </div>
+          <button id="btnExportInquiries" class="btn-action-primary">
+            <i class="fa-solid fa-file-csv"></i> Export CSV
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Client Info</th>
+                <th>Service</th>
+                <th>Budget</th>
+                <th>Timeline</th>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Quick Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inquiriesTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 8: THEME & SECURITY STUDIO -->
+      <section id="tabPanel-theme" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Theme Studio & Security Settings</h2>
+            <p>Customize default aesthetic themes and update your 4-digit Master Security PIN.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border); max-width: 600px;">
+          <div class="admin-input-group" style="margin-bottom: 1.5rem;">
+            <label class="admin-label">Default Live Theme Preset</label>
+            <select id="studioThemeSelect" class="admin-select">
+              <option value="cyber-dark">Cyber Dark (Futuristic Obsidian)</option>
+              <option value="neon-cyber">Neon Cyberpunk (Vibrant Pink / Cyan)</option>
+              <option value="midnight-gold">Midnight Gold (Luxury Prestige)</option>
+              <option value="luxury-light">Luxury Light (Minimalist White)</option>
+              <option value="synthwave">Synthwave Violet (Deep Space)</option>
+            </select>
+          </div>
+
+          <div class="admin-input-group" style="margin-bottom: 2rem;">
+            <label class="admin-label">4-Digit Master PIN Code</label>
+            <input type="password" id="studioMasterPin" maxlength="6" class="admin-input" placeholder="2558" />
+            <small style="color: var(--admin-text-dim);">This PIN protects your offline admin panel.</small>
+          </div>
+
+          <button id="btnSaveThemeSettings" class="btn-action-primary">
+            <i class="fa-solid fa-floppy-disk"></i> Update Theme & PIN
+          </button>
+        </div>
+      </section>
+
+      <!-- TAB 9: IMAGE COMPRESSOR UTILITY -->
+      <section id="tabPanel-compressor" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>HTML5 Canvas Image Compressor</h2>
+            <p>Optimize heavy project artwork down to ultra-fast WebP format (< 150KB) in-browser.</p>
+          </div>
+        </div>
+
+        <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border); max-width: 800px;">
+          <input type="file" id="compressorFileInput" accept="image/*" style="display: none;" />
+          <div class="compressor-dropzone" id="compressorDropzone">
+            <i class="fa-solid fa-cloud-arrow-up compressor-icon"></i>
+            <h3>Drag & Drop Image Here, or Click to Browse</h3>
+            <p style="color: var(--admin-text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Supports PNG, JPG, WebP. Compressed automatically using client-side HTML5 Canvas.</p>
+          </div>
+
+          <div id="compressorPreviewRow" class="compressor-preview-row" style="display: none;">
+            <img id="compressedThumb" class="compressor-thumb" alt="Optimized Preview" />
+            <div style="flex: 1;">
+              <div id="compressorStats" class="compressor-stats"></div>
+              <div style="display: flex; gap: 0.75rem; margin-top: 0.75rem;">
+                <button id="btnCopyCompressed" class="btn-sidebar-action">
+                  <i class="fa-regular fa-copy"></i> Copy Data URI
+                </button>
+                <button id="btnDownloadCompressed" class="btn-action-primary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
+                  <i class="fa-solid fa-download"></i> Download WebP
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 10: SUPABASE & BACKUP SYNC HUB -->
+      <section id="tabPanel-supabase" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Supabase Cloud Setup & 1-Click JSON Backup</h2>
+            <p>Connect your free Supabase PostgreSQL Cloud database or export complete JSON backups.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+          <!-- Supabase Cloud Credentials Box -->
+          <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
+            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-cloud" style="color: var(--admin-primary);"></i> Supabase Cloud Keys
+            </h3>
+
+            <div class="admin-input-group" style="margin-bottom: 1rem;">
+              <label class="admin-label">Supabase Project URL</label>
+              <input type="url" id="syncSupabaseUrl" class="admin-input" placeholder="https://xyzabcdef.supabase.co" />
+            </div>
+
+            <div class="admin-input-group" style="margin-bottom: 1.5rem;">
+              <label class="admin-label">Supabase Anon Public API Key</label>
+              <input type="password" id="syncSupabaseKey" class="admin-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
+            </div>
+
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+              <button id="btnSaveSupabaseCreds" class="btn-action-primary">
+                <i class="fa-solid fa-bolt"></i> Save & Connect
+              </button>
+              <button id="btnTestSupabase" class="btn-sidebar-action">
+                <i class="fa-solid fa-vial"></i> Test Connection
+              </button>
+              <button id="btnPushAllToCloud" class="btn-sidebar-action" title="Push all local portfolio data into Supabase Cloud tables">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Push All Data to Cloud
+              </button>
+            </div>
+          </div>
+
+          <!-- JSON Backup & Restore Box -->
+          <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
+            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-file-export" style="color: var(--admin-accent);"></i> 1-Click JSON Backup & Restore
+            </h3>
+
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 1.5rem;">
+              Download a complete standalone <code>data.json</code> file or restore existing backups in 1-click without writing any SQL.
+            </p>
+
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <button id="btnExportJson" class="btn-action-primary" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
+                <i class="fa-solid fa-download"></i> 1-Click Download JSON Backup
+              </button>
+
+              <label class="btn-sidebar-action" style="justify-content: center; padding: 0.75rem; cursor: pointer;">
+                <i class="fa-solid fa-upload"></i> Restore from JSON Backup
+                <input type="file" id="jsonFileInput" accept=".json" style="display: none;" />
+              </label>
+
+              <button id="btnFactoryReset" class="btn-sidebar-action" style="color: var(--admin-danger); border-color: rgba(239, 68, 68, 0.3);">
+                <i class="fa-solid fa-rotate-left"></i> Reset to Factory Seed
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- MODAL: ADD / EDIT PROJECT -->
+  <div id="projectModal" class="admin-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title" id="projectModalTitle">Add New Showcase Project</h3>
+        <button id="closeProjectModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="projectForm">
+        <div class="modal-body">
+          <input type="hidden" id="projId" />
+          <div class="modal-grid">
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Project Title *</label>
+              <input type="text" id="projTitle" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Main Category</label>
+              <select id="projCategory" class="admin-select">
+                <option value="3d-vfx">3D Motion & VFX</option>
+                <option value="ui-ux">UI/UX Design</option>
+                <option value="graphics">Graphics & Branding</option>
+                <option value="web-dev">Web Development</option>
+                <option value="vfx-video">Video & Color</option>
+              </select>
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Subcategory Pill (e.g. Cinema 4D, Figma)</label>
+              <input type="text" id="projSubcategory" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Main Thumbnail Image URL *</label>
+              <input type="url" id="projThumb" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Gallery Images (One URL per line for Lightbox Carousel)</label>
+              <textarea id="projImages" class="admin-textarea" rows="3" placeholder="https://images.unsplash.com/...&#10;https://images.unsplash.com/..."></textarea>
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Video Embed URL (YouTube/Vimeo/MP4)</label>
+              <input type="text" id="projVideoUrl" class="admin-input" placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Client Name</label>
+              <input type="text" id="projClient" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Year / Timeframe</label>
+              <input type="text" id="projYear" class="admin-input" placeholder="2025" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Tech Stack Tags (comma-separated)</label>
+              <input type="text" id="projTags" class="admin-input" placeholder="Cinema 4D, Octane Render, Figma, React" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Description & Case Study Summary</label>
+              <textarea id="projDesc" class="admin-textarea" rows="3"></textarea>
+            </div>
+
+            <div class="admin-input-group full-width" style="flex-direction: row; align-items: center; gap: 0.75rem;">
+              <input type="checkbox" id="projFeatured" style="width: 18px; height: 18px; accent-color: var(--admin-primary);" />
+              <label for="projFeatured" class="admin-label" style="cursor: pointer;">Mark as Featured Project on Hero</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-action-primary">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT SERVICE -->
+  <div id="serviceModal" class="admin-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Add / Edit Service Offering</h3>
+        <button id="closeServiceModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="serviceForm">
+        <div class="modal-body">
+          <input type="hidden" id="servId" />
+          <div class="modal-grid">
+            <div class="admin-input-group">
+              <label class="admin-label">Service Title *</label>
+              <input type="text" id="servTitle" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Category</label>
+              <select id="servCategory" class="admin-select">
+                <option value="3d-vfx">3D & VFX</option>
+                <option value="ui-ux">UI/UX Design</option>
+                <option value="graphics">Graphics</option>
+                <option value="web-dev">Web Development</option>
+                <option value="vfx-video">Video Editing</option>
+                <option value="consulting">Consulting</option>
+              </select>
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">FontAwesome Icon Class</label>
+              <input type="text" id="servIcon" class="admin-input" placeholder="fa-cube" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Starting Price</label>
+              <input type="text" id="servPrice" class="admin-input" placeholder="₹15,000 / $250" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Estimated Delivery Time</label>
+              <input type="text" id="servDelivery" class="admin-input" placeholder="3 - 7 Days" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">WhatsApp Prefill Message</label>
+              <input type="text" id="servWaMsg" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Service Description</label>
+              <textarea id="servDesc" class="admin-textarea" rows="2"></textarea>
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Features & Deliverables List (One per line)</label>
+              <textarea id="servFeatures" class="admin-textarea" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-action-primary">Save Service</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT SKILL -->
+  <div id="skillModal" class="admin-modal">
+    <div class="modal-card" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Add / Edit Skill</h3>
+        <button id="closeSkillModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="skillForm">
+        <div class="modal-body">
+          <input type="hidden" id="skillIndex" />
+          <div class="admin-input-group" style="margin-bottom: 1rem;">
+            <label class="admin-label">Skill Name *</label>
+            <input type="text" id="skillName" class="admin-input" required />
+          </div>
+
+          <div class="admin-input-group" style="margin-bottom: 1rem;">
+            <label class="admin-label">Category</label>
+            <select id="skillCat" class="admin-select">
+              <option value="3D & Motion">3D & Motion</option>
+              <option value="UI/UX Design">UI/UX Design</option>
+              <option value="Graphics Design">Graphics Design</option>
+              <option value="Web Development">Web Development</option>
+              <option value="VFX & Video">VFX & Video</option>
+            </select>
+          </div>
+
+          <div class="admin-input-group" style="margin-bottom: 1rem;">
+            <label class="admin-label">Proficiency Percentage (0 - 100)</label>
+            <input type="number" id="skillLevel" min="1" max="100" class="admin-input" value="90" />
+          </div>
+
+          <div class="admin-input-group">
+            <label class="admin-label">FontAwesome Icon Class</label>
+            <input type="text" id="skillIcon" class="admin-input" placeholder="fa-cube" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-action-primary">Save Skill</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT EXPERIENCE -->
+  <div id="expModal" class="admin-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Add / Edit Career Milestone</h3>
+        <button id="closeExpModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="expForm">
+        <div class="modal-body">
+          <input type="hidden" id="expId" />
+          <div class="modal-grid">
+            <div class="admin-input-group">
+              <label class="admin-label">Role / Job Title *</label>
+              <input type="text" id="expRole" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Company / Studio *</label>
+              <input type="text" id="expCompany" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Timeframe (e.g. 2023 - Present)</label>
+              <input type="text" id="expPeriod" class="admin-input" placeholder="2023 - Present" required />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Role Overview Description</label>
+              <textarea id="expDesc" class="admin-textarea" rows="2"></textarea>
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Key Achievements & Highlights (One per line)</label>
+              <textarea id="expHighlights" class="admin-textarea" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-action-primary">Save Milestone</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: ADD / EDIT REVIEW -->
+  <div id="reviewModal" class="admin-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title">Add / Edit Client Review</h3>
+        <button id="closeReviewModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="reviewForm">
+        <div class="modal-body">
+          <input type="hidden" id="revId" />
+          <div class="modal-grid">
+            <div class="admin-input-group">
+              <label class="admin-label">Client Name *</label>
+              <input type="text" id="revName" class="admin-input" required />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Designation / Role</label>
+              <input type="text" id="revRole" class="admin-input" placeholder="CEO / Product Lead" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Company Name</label>
+              <input type="text" id="revCompany" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Star Rating (1 - 5)</label>
+              <select id="revRating" class="admin-select">
+                <option value="5">⭐⭐⭐⭐⭐ (5 Stars)</option>
+                <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
+                <option value="3">⭐⭐⭐ (3 Stars)</option>
+              </select>
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Client Avatar URL</label>
+              <input type="url" id="revAvatar" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Referenced Project</label>
+              <input type="text" id="revProject" class="admin-input" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Review Testimonial Text *</label>
+              <textarea id="revText" class="admin-textarea" rows="3" required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn-action-primary">Save Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- Core Scripts -->
+  <script src="js/supabase-config.js"></script>
+  <script src="js/data-store.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

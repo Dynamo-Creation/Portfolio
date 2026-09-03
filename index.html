@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="cyber-dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Primary SEO Meta Tags -->
+  <title>Sonu Choudhary | Creative Technologist, 3D Motion & VFX Artist, UI/UX Designer</title>
+  <meta name="title" content="Sonu Choudhary | Creative Technologist, 3D Motion & VFX Artist, UI/UX Designer" />
+  <meta name="description" content="Portfolio of Sonu Choudhary - Multi-disciplinary Creative Technologist, 3D Motion & VFX Artist, UI/UX Designer, Graphics Artist & Full-Stack Web Developer." />
+  <meta name="keywords" content="Sonu Choudhary, 3D Motion Artist, VFX Artist, UI/UX Designer, Graphics Designer, Web Developer, Video Editor, Cinema 4D, Figma, Three.js, Portfolio" />
+  <meta name="author" content="Sonu Choudhary" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph / Facebook / WhatsApp -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sonuchoudhary.com" />
+  <meta property="og:title" content="Sonu Choudhary | 3D Motion & VFX Artist, UI/UX Designer & Web Developer" />
+  <meta property="og:description" content="Crafting immersive 3D digital experiences, cinematic visual effects, and high-conversion UI/UX interfaces." />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" />
+
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="./css/style.css" />
+
+  <!-- Supabase JS CDN (Zero-Build Cloud Integration) -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+  <!-- Ambient Color Glows -->
+  <div class="ambient-glow ambient-glow-1"></div>
+  <div class="ambient-glow ambient-glow-2"></div>
+
+  <!-- 3D Interactive Particle Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- 0-100% RADIAL SPLASH PRELOADER -->
+  <div id="preloader">
+    <div class="loader-content">
+      <div class="loader-brand">SONU CHOUDHARY</div>
+      <div class="loader-ring-wrapper">
+        <svg class="loader-svg" viewBox="0 0 140 140">
+          <defs>
+            <linearGradient id="loaderGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#6366f1" />
+              <stop offset="50%" stop-color="#06b6d4" />
+              <stop offset="100%" stop-color="#ec4899" />
+            </linearGradient>
+          </defs>
+          <circle class="loader-bg-circle" cx="70" cy="70" r="60" />
+          <circle id="loaderCircle" class="loader-bar-circle" cx="70" cy="70" r="60" />
+        </svg>
+        <div id="loaderPercent" class="loader-percent">0%</div>
+      </div>
+      <div id="loaderStatus" class="loader-status">Initializing 3D Universe...</div>
+    </div>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="#home" class="brand-logo">
+        <div class="logo-badge">SC</div>
+        <span class="logo-text user-name-target">Sonu Choudhary</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#work" class="nav-link">Showcase</a>
+        <a href="#services" class="nav-link">Services</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#experience" class="nav-link">Timeline</a>
+        <a href="#reviews" class="nav-link">Reviews</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="header-actions">
+        <button class="theme-toggle-btn" title="Switch Theme (Cyber Dark / Neon / Gold / Light)">
+          <i class="fa-solid fa-palette"></i>
+        </button>
+        <a href="admin.html" class="cms-link-btn" title="Open No-Code Admin CMS">
+          <i class="fa-solid fa-gear"></i>
+        </a>
+        <a href="#contact" class="btn-hire user-whatsapp-link" target="_blank">
+          <i class="fa-brands fa-whatsapp"></i> Hire Me
+        </a>
+        <button class="hamburger-btn" aria-label="Toggle Mobile Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE DRAWER -->
+  <div class="mobile-drawer">
+    <nav class="drawer-links">
+      <a href="#home" class="drawer-link active">Home</a>
+      <a href="#work" class="drawer-link">Showcase</a>
+      <a href="#services" class="drawer-link">Services</a>
+      <a href="#skills" class="drawer-link">Skills Matrix</a>
+      <a href="#experience" class="drawer-link">Career Milestones</a>
+      <a href="#reviews" class="drawer-link">Client Reviews</a>
+      <a href="#contact" class="drawer-link">Direct Inquiries</a>
+      <a href="admin.html" class="drawer-link" style="color: var(--color-primary);"><i class="fa-solid fa-lock"></i> Admin CMS</a>
+    </nav>
+  </div>
+
+  <!-- MOBILE 5-DOCK NAVIGATION -->
+  <nav class="mobile-5dock">
+    <a href="#home" class="dock-item active">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a href="#work" class="dock-item">
+      <i class="fa-solid fa-layer-group"></i>
+      <span>Work</span>
+    </a>
+    <a href="#services" class="dock-item">
+      <i class="fa-solid fa-cube"></i>
+      <span>Services</span>
+    </a>
+    <a href="#skills" class="dock-item">
+      <i class="fa-solid fa-code"></i>
+      <span>Skills</span>
+    </a>
+    <a href="#contact" class="dock-item">
+      <i class="fa-solid fa-paper-plane"></i>
+      <span>Contact</span>
+    </a>
+  </nav>
+
+  <!-- 1. HERO SECTION -->
+  <section id="home" class="hero-section">
+    <div class="hero-grid">
+      <div class="hero-text-content">
+        <div class="hero-badge-wrapper">
+          <span class="badge-pulse"></span>
+          <span class="badge-text">Available for Select Projects & Collaborations</span>
+        </div>
+
+        <h1 class="hero-title">
+          Hi, I'm <span class="hero-highlight user-name-target">Sonu Choudhary</span>
+        </h1>
+
+        <div class="hero-roles-typed">
+          <i class="fa-solid fa-terminal" style="font-size: 1rem; color: var(--color-primary);"></i>
+          <span id="heroRolesTyped">Creative Technologist</span>
+          <span class="cursor-blink"></span>
+        </div>
+
+        <p class="hero-bio user-bio-target">
+          I am a multi-disciplinary Creative Technologist blending high-end 3D motion design, cutting-edge VFX, human-centered UI/UX design, and robust modern web engineering to craft immersive digital realities.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#work" class="btn-primary">
+            <span>Explore Work</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="#contact" class="btn-glass user-whatsapp-link" target="_blank">
+            <i class="fa-brands fa-whatsapp" style="color: #25d366;"></i>
+            <span>Quick WhatsApp Chat</span>
+          </a>
+          <a href="#" id="heroResumeBtn" class="btn-glass" download>
+            <i class="fa-solid fa-file-arrow-down"></i>
+            <span>Resume</span>
+          </a>
+        </div>
+
+        <div class="hero-stats-row">
+          <div class="stat-item">
+            <span class="stat-number">6+</span>
+            <span class="stat-label">Years Experience</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">120+</span>
+            <span class="stat-label">Projects Shipped</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">99%</span>
+            <span class="stat-label">Client Satisfaction</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bespoke Domain Showcase Visualizer -->
+      <div class="hero-visual-card">
+        <div class="showcase-header">
+          <div class="showcase-modes">
+            <button class="mode-btn active" data-mode="vfx">
+              <i class="fa-solid fa-cube"></i> 3D & VFX
+            </button>
+            <button class="mode-btn" data-mode="uiux">
+              <i class="fa-solid fa-mobile-screen"></i> UI/UX
+            </button>
+            <button class="mode-btn" data-mode="terminal">
+              <i class="fa-solid fa-code"></i> Web Dev
+            </button>
+          </div>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--color-accent);">LIVE 3D</span>
+        </div>
+
+        <div class="showcase-display">
+          <!-- 3D VFX Showreel View -->
+          <div id="panel-vfx" class="showcase-panel panel-vfx active">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80" alt="3D CGI Showreel" />
+            <div class="vfx-hud-overlay">
+              <div class="hud-title">CyberMatrix Holographic Sequence</div>
+              <div class="hud-tags">
+                <span class="hud-tag">Cinema 4D</span>
+                <span class="hud-tag">Octane Render</span>
+                <span class="hud-tag">Unreal Engine 5</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- UI/UX Figma Mockup View -->
+          <div id="panel-uiux" class="showcase-panel panel-uiux">
+            <div class="figma-toolbar">
+              <span><i class="fa-brands fa-figma" style="color: #f24e1e;"></i> FinPulse OS Prototype</span>
+              <span style="color: #10b981;">100% Zoom</span>
+            </div>
+            <div class="figma-canvas">
+              <div class="mockup-phone-frame">
+                <div style="height: 14px; background: rgba(255,255,255,0.1); border-radius: 4px;"></div>
+                <div style="height: 60px; background: var(--gradient-brand); border-radius: 8px; padding: 6px;">
+                  <div style="font-size: 0.6rem; color: #fff; font-weight: bold;">Portfolio Balance</div>
+                  <div style="font-size: 0.85rem; color: #fff; font-weight: 800;">$142,580.00</div>
+                </div>
+                <div style="display: flex; gap: 4px; flex: 1;">
+                  <div style="flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px;"></div>
+                  <div style="flex: 1; background: rgba(255,255,255,0.05); border-radius: 6px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Web Dev Terminal View -->
+          <div id="panel-terminal" class="showcase-panel panel-terminal">
+            <div class="terminal-header">
+              <div class="terminal-dot dot-red"></div>
+              <div class="terminal-dot dot-yellow"></div>
+              <div class="terminal-dot dot-green"></div>
+              <span style="margin-left: 8px; font-size: 0.75rem; color: #8b949e;">sonu@creative-technologist ~ %</span>
+            </div>
+            <div class="terminal-code">
+              <span class="code-comment">// Sonu Choudhary Core Architecture</span><br/>
+              <span class="code-keyword">const</span> <span class="code-fn">technologist</span> = {<br/>
+              &nbsp;&nbsp;name: <span class="code-str">"Sonu Choudhary"</span>,<br/>
+              &nbsp;&nbsp;skills: [<span class="code-str">"3D Motion"</span>, <span class="code-str">"VFX"</span>, <span class="code-str">"UI/UX"</span>, <span class="code-str">"ThreeJS"</span>],<br/>
+              &nbsp;&nbsp;cloud: <span class="code-str">"Supabase PostgreSQL"</span>,<br/>
+              &nbsp;&nbsp;deliverables: <span class="code-fn">async</span> () => <span class="code-keyword">await</span> launchWorldClassArt()<br/>
+              };<br/>
+              <span class="code-fn">technologist.deliverables</span>();
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PORTFOLIO SHOWCASE SECTION -->
+  <section id="work" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-sparkles"></i> Curated Works
+      </div>
+      <h2 class="section-title">Featured Creations & Case Studies</h2>
+      <p class="section-desc">
+        Explore high-impact projects spanning 3D CGI Motion, VFX Compositing, Human-Centered UI/UX Systems, and Modern Interactive Web Experiences.
+      </p>
+    </div>
+
+    <!-- Category & Subcategory Filter Hub -->
+    <div class="filter-hub">
+      <div class="filter-categories">
+        <button class="cat-btn active" data-cat="all">
+          <i class="fa-solid fa-border-all"></i> All Projects
+        </button>
+        <button class="cat-btn" data-cat="3d-vfx">
+          <i class="fa-solid fa-cube"></i> 3D & VFX
+        </button>
+        <button class="cat-btn" data-cat="ui-ux">
+          <i class="fa-solid fa-layer-group"></i> UI/UX Design
+        </button>
+        <button class="cat-btn" data-cat="graphics">
+          <i class="fa-solid fa-bezier-curve"></i> Graphics Art
+        </button>
+        <button class="cat-btn" data-cat="web-dev">
+          <i class="fa-solid fa-code"></i> Web Dev
+        </button>
+        <button class="cat-btn" data-cat="vfx-video">
+          <i class="fa-solid fa-film"></i> Video & Color
+        </button>
+      </div>
+
+      <!-- Dynamic Subcategory Pills -->
+      <div id="subcategoryPills" class="subcategory-pills"></div>
+
+      <!-- Live Search Bar -->
+      <div class="search-input-wrapper">
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+        <input type="text" id="projectSearchInput" class="search-input" placeholder="Search by title, tool, or keyword..." />
+      </div>
+    </div>
+
+    <!-- Project Cards Grid -->
+    <div id="projectsGrid" class="projects-grid"></div>
+  </section>
+
+  <!-- 3. SERVICES SECTION -->
+  <section id="services" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-bolt"></i> What I Offer
+      </div>
+      <h2 class="section-title">Specialized Creative Solutions</h2>
+      <p class="section-desc">
+        Tailored high-end creative pipelines designed to elevate brand authority, capture audience fascination, and drive conversion.
+      </p>
+    </div>
+
+    <div id="servicesGrid" class="services-grid"></div>
+  </section>
+
+  <!-- 4. SKILL MATRIX SECTION -->
+  <section id="skills" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-microchip"></i> Expertise & Mastery
+      </div>
+      <h2 class="section-title">Technical & Visual Skill Matrix</h2>
+      <p class="section-desc">
+        A deep arsenal of industry-standard 3D suites, design architectures, motion pipelines, and full-stack engineering tools.
+      </p>
+    </div>
+
+    <div id="skillsContainer" class="skills-container"></div>
+  </section>
+
+  <!-- 5. CAREER TIMELINE & EXPERIENCE -->
+  <section id="experience" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-timeline"></i> Track Record
+      </div>
+      <h2 class="section-title">Career Milestones & Leadership</h2>
+      <p class="section-desc">
+        A chronological journey of creative direction, agency leadership, and high-stakes digital production.
+      </p>
+    </div>
+
+    <div id="timelineWrapper" class="timeline-wrapper"></div>
+  </section>
+
+  <!-- 6. CLIENT REVIEWS & TESTIMONIALS -->
+  <section id="reviews" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-quote-left"></i> Client Endorsements
+      </div>
+      <h2 class="section-title">What Leaders & Clients Say</h2>
+      <p class="section-desc">
+        Feedback from founders, creative directors, and product teams across global markets.
+      </p>
+    </div>
+
+    <div id="reviewsGrid" class="reviews-grid"></div>
+  </section>
+
+  <!-- 7. WHATSAPP SMART AUTOMATION & CONTACT SECTION -->
+  <section id="contact" class="section">
+    <div class="section-header">
+      <div class="section-subtitle">
+        <i class="fa-solid fa-paper-plane"></i> Get In Touch
+      </div>
+      <h2 class="section-title">Let's Build Something Legendary</h2>
+      <p class="section-desc">
+        Have an upcoming project, commercial spot, or product vision? Send a direct dispatch or message on WhatsApp for instant quote estimation.
+      </p>
+    </div>
+
+    <div class="contact-section-grid">
+      <!-- Direct Contact Cards -->
+      <div class="contact-info-panel">
+        <div class="contact-direct-card">
+          <a href="tel:+918620028817" class="direct-link-item user-phone-target">
+            <div class="direct-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="direct-detail">
+              <span class="direct-label">Direct Line 1</span>
+              <span class="direct-value">+91 8620028817</span>
+            </div>
+          </a>
+
+          <a href="tel:+918584866240" class="direct-link-item">
+            <div class="direct-icon"><i class="fa-solid fa-phone-volume"></i></div>
+            <div class="direct-detail">
+              <span class="direct-label">Direct Line 2</span>
+              <span class="direct-value">+91 8584866240</span>
+            </div>
+          </a>
+
+          <a href="https://wa.me/918584866240" target="_blank" class="direct-link-item user-whatsapp-link">
+            <div class="direct-icon" style="color: #25d366;"><i class="fa-brands fa-whatsapp"></i></div>
+            <div class="direct-detail">
+              <span class="direct-label">WhatsApp Hotline</span>
+              <span class="direct-value">+91 8584866240</span>
+            </div>
+          </a>
+
+          <a href="mailto:Sonu25580@gmail.com" class="direct-link-item user-email-target">
+            <div class="direct-icon"><i class="fa-solid fa-envelope"></i></div>
+            <div class="direct-detail">
+              <span class="direct-label">Official Email</span>
+              <span class="direct-value">Sonu25580@gmail.com</span>
+            </div>
+          </a>
+
+          <div class="direct-link-item">
+            <div class="direct-icon"><i class="fa-solid fa-location-dot"></i></div>
+            <div class="direct-detail">
+              <span class="direct-label">Location</span>
+              <span class="direct-value user-location-target">Kolkata & Remote Worldwide</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WhatsApp Smart Automation Bot Form -->
+      <form id="whatsappBotForm" class="whatsapp-bot-form">
+        <h3 class="form-title">Instant Project Estimator & WhatsApp Dispatch</h3>
+        <p class="form-subtitle">Fill in your requirements below to generate a formatted WhatsApp brief and record your inquiry.</p>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="inqName">Your Name *</label>
+            <input type="text" id="inqName" class="form-input" placeholder="e.g. Rahul Sharma" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inqEmail">Your Email *</label>
+            <input type="email" id="inqEmail" class="form-input" placeholder="name@company.com" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inqPhone">Phone / WhatsApp</label>
+            <input type="tel" id="inqPhone" class="form-input" placeholder="+91 9876543210" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inqService">Required Service</label>
+            <select id="inqService" class="form-select">
+              <option value="3D Motion Graphics & CGI Visuals">3D Motion Graphics & CGI Visuals</option>
+              <option value="UI/UX & Product Design Systems">UI/UX & Product Design Systems</option>
+              <option value="Brand Identity & Graphic Artistry">Brand Identity & Graphic Artistry</option>
+              <option value="Modern Web & Interactive Development">Modern Web & Interactive Development</option>
+              <option value="Cinematic VFX & Video Editing">Cinematic VFX & Video Editing</option>
+              <option value="Creative Direction Consultation">Creative Direction Consultation</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inqBudget">Estimated Budget Range</label>
+            <select id="inqBudget" class="form-select">
+              <option value="₹10,000 - ₹25,000 / $150 - $350">₹10,000 - ₹25,000 / $150 - $350</option>
+              <option value="₹25,000 - ₹60,000 / $350 - $800">₹25,000 - ₹60,000 / $350 - $800</option>
+              <option value="₹60,000 - ₹1,50,000+ / $800 - $2,000+">₹60,000 - ₹1,50,000+ / $800 - $2,000+</option>
+              <option value="Custom Enterprise Scope">Custom Enterprise Scope</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inqTimeline">Target Timeline</label>
+            <select id="inqTimeline" class="form-select">
+              <option value="Urgent (1 - 3 Days)">Urgent (1 - 3 Days)</option>
+              <option value="Standard (1 - 2 Weeks)">Standard (1 - 2 Weeks)</option>
+              <option value="Flexible (1 Month+)">Flexible (1 Month+)</option>
+            </select>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label" for="inqMessage">Project Brief & Deliverable Details *</label>
+            <textarea id="inqMessage" class="form-textarea" placeholder="Describe your project vision, target audience, reference links, or key deliverables..." required></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-whatsapp-dispatch">
+          <i class="fa-brands fa-whatsapp" style="font-size: 1.3rem;"></i>
+          <span>Send Inquiry via WhatsApp Bot</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- 8. MULTI-MEDIA LIGHTBOX MODAL -->
+  <div id="lightboxModal" class="lightbox-modal">
+    <div class="lightbox-container">
+      <button id="lightboxCloseBtn" class="lightbox-close-btn" aria-label="Close Lightbox">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="lightboxStage" class="lightbox-media-stage"></div>
+      <div id="lightboxThumbsBar" class="lightbox-thumbs-bar"></div>
+
+      <div class="lightbox-body">
+        <div class="lightbox-meta-header">
+          <div>
+            <h3 id="lightboxTitle" class="lightbox-title">Project Title</h3>
+            <span id="lightboxClient" style="font-size: 0.85rem; color: var(--color-accent); font-family: var(--font-mono);">Client Name</span>
+          </div>
+        </div>
+
+        <p id="lightboxDesc" class="lightbox-desc">Project description details will appear here.</p>
+
+        <div id="lightboxTags" class="project-tags-row"></div>
+
+        <div class="lightbox-footer-actions">
+          <span style="font-size: 0.85rem; color: var(--text-dim);">100% Bespoke Custom Execution</span>
+          <a href="#" id="lightboxWhatsAppBtn" target="_blank" class="btn-service-whatsapp">
+            <i class="fa-brands fa-whatsapp"></i> Inquire About This Project
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="brand-logo">
+        <div class="logo-badge">SC</div>
+        <span class="logo-text user-name-target">Sonu Choudhary</span>
+      </div>
+
+      <div class="footer-socials">
+        <a href="https://behance.net" target="_blank" class="social-icon-btn" title="Behance"><i class="fa-brands fa-behance"></i></a>
+        <a href="https://dribbble.com" target="_blank" class="social-icon-btn" title="Dribbble"><i class="fa-brands fa-dribbble"></i></a>
+        <a href="https://github.com" target="_blank" class="social-icon-btn" title="GitHub"><i class="fa-brands fa-github"></i></a>
+        <a href="https://linkedin.com" target="_blank" class="social-icon-btn" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://instagram.com" target="_blank" class="social-icon-btn" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://youtube.com" target="_blank" class="social-icon-btn" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+
+      <p class="footer-copy">
+        &copy; <span id="currentYear">2026</span> <strong class="user-name-target">Sonu Choudhary</strong>. All rights reserved. Crafted with Zero-Build 3D Architecture & Supabase Realtime Cloud.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Core JavaScript Modules -->
+  <script src="./js/supabase-config.js"></script>
+  <script src="./js/data-store.js"></script>
+  <script src="./js/canvas-bg.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>
