@@ -3,10 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>No-Code Admin CMS | Sonu Choudhary 3D Portfolio</title>
+  <title>Admin CMS Dashboard | Sonu Choudhary 3D Portfolio</title>
   
   <!-- Font Awesome CDN -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
 
   <!-- Admin CMS Stylesheet -->
   <link rel="stylesheet" href="css/admin.css" />
@@ -23,27 +28,44 @@
       <p class="auth-subtitle">Zero-Code Management Suite for Sonu Choudhary</p>
 
       <div class="auth-tabs">
-        <button class="auth-tab-btn active" data-auth-mode="pin">
-          <i class="fa-solid fa-key"></i> 4-Digit Master PIN
+        <button class="auth-tab-btn active" data-auth-mode="pin" id="tabBtnPin">
+          <i class="fa-solid fa-key"></i> Master PIN Access
         </button>
-        <button class="auth-tab-btn" data-auth-mode="email">
+        <button class="auth-tab-btn" data-auth-mode="email" id="tabBtnEmail">
           <i class="fa-solid fa-cloud"></i> Supabase Cloud Auth
         </button>
       </div>
 
+      <!-- Anti-Brute-Force Lockout Banner (Dynamic) -->
+      <div id="pinLockoutBanner" class="auth-lockout-banner" style="display: none;">
+        <i class="fa-solid fa-shield-halved"></i>
+        <div class="lockout-text-block">
+          <div class="lockout-title">Security Lockout Active</div>
+          <div id="lockoutTimerText" class="lockout-timer">Too many failed attempts. Try again in 05:00</div>
+        </div>
+      </div>
+
       <!-- PIN Auth Panel -->
       <div id="authPanel-pin" class="auth-form-panel active">
-        <p style="font-size: 0.85rem; color: var(--admin-text-muted); text-align: center;">
+        <p id="pinAuthInstruction" style="font-size: 0.85rem; color: var(--admin-text-muted); text-align: center; margin-bottom: 1.25rem;">
           Enter your 4-digit Master Security PIN (Default: <strong>2558</strong>):
         </p>
         <form id="pinAuthForm">
           <div class="pin-inputs-row">
-            <input type="password" maxlength="1" class="pin-digit" autofocus />
-            <input type="password" maxlength="1" class="pin-digit" />
-            <input type="password" maxlength="1" class="pin-digit" />
-            <input type="password" maxlength="1" class="pin-digit" />
+            <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" autofocus autocomplete="off" />
+            <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" autocomplete="off" />
+            <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" autocomplete="off" />
+            <input type="password" maxlength="1" class="pin-digit" inputmode="numeric" autocomplete="off" />
           </div>
-          <button type="submit" class="btn-auth-submit">
+          <div class="pin-aux-bar">
+            <span id="pinAttemptsText" class="pin-shield-status">
+              <i class="fa-solid fa-shield"></i> <span id="attemptsRemainingCount">5</span> attempts remaining
+            </span>
+            <button type="button" id="btnTogglePinVisibility" class="btn-pin-peek" title="Show / Hide PIN digits">
+              <i class="fa-solid fa-eye" id="pinPeekIcon"></i>
+            </button>
+          </div>
+          <button type="submit" id="btnPinSubmit" class="btn-auth-submit">
             <i class="fa-solid fa-lock-open"></i> Unlock Dashboard
           </button>
         </form>
@@ -63,67 +85,80 @@
           <button type="submit" class="btn-auth-submit">
             <i class="fa-solid fa-cloud-arrow-up"></i> Sign In to Supabase
           </button>
+          <div style="text-align: center; margin-top: 0.5rem;">
+            <button type="button" id="btnForgotPassword" style="background: none; border: none; color: var(--admin-accent); font-size: 0.8rem; cursor: pointer; text-decoration: underline;">
+              Forgot Cloud Password?
+            </button>
+          </div>
         </form>
       </div>
     </div>
   </div>
 
-  <!-- 2. ADMIN SIDEBAR NAVIGATION -->
+  <!-- 2. ADMIN SIDEBAR NAVIGATION & 3-LINE DRAWER -->
   <aside class="admin-sidebar" id="adminSidebar">
     <div class="sidebar-header">
       <div class="sidebar-brand">
         <i class="fa-solid fa-cubes-stacked" style="color: var(--admin-primary);"></i>
-        <span>SC CMS STUDIO</span>
+        <span>SONU CMS</span>
       </div>
+      <button class="sidebar-close-btn" id="sidebarCloseBtn" aria-label="Close Sidebar">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
 
+    <!-- Interactive Cloud Sync Status Widget in 3-Line Menu Header -->
+    <div class="cloud-sync-menu-widget" id="cloudSyncMenuWidget" title="Click to view Supabase Cloud & Sync settings">
+      <div class="cloud-widget-left">
+        <span class="cloud-widget-icon">☁️</span>
+        <div class="cloud-widget-text">
+          <span class="cloud-widget-title">Cloud Sync</span>
+          <span class="cloud-widget-status" id="cloudStatusPill">🟢 Live Connected</span>
+        </div>
+      </div>
+      <i class="fa-solid fa-chevron-right" style="font-size: 0.75rem; color: var(--admin-text-dim);"></i>
+    </div>
+
+    <!-- Sidebar Navigation Tabs -->
     <div class="sidebar-menu">
-      <div class="menu-category-title">Core Management</div>
-      <button class="sidebar-item active" data-tab="profile">
-        <i class="fa-solid fa-user-astronaut"></i>
-        <span>Profile & Socials</span>
+      <div class="menu-category-title">Management</div>
+      <button class="sidebar-item active" data-tab="overview">
+        <i class="fa-solid fa-chart-pie"></i>
+        <span>Overview</span>
       </button>
       <button class="sidebar-item" data-tab="projects">
         <i class="fa-solid fa-layer-group"></i>
-        <span>Projects Showcase</span>
+        <span>Project Manager</span>
       </button>
       <button class="sidebar-item" data-tab="services">
         <i class="fa-solid fa-cube"></i>
-        <span>Services & Pricing</span>
+        <span>Services Manager</span>
+      </button>
+      <button class="sidebar-item" data-tab="profile">
+        <i class="fa-solid fa-user-astronaut"></i>
+        <span>Profile & Socials</span>
       </button>
       <button class="sidebar-item" data-tab="skills">
         <i class="fa-solid fa-code"></i>
-        <span>Skills Matrix</span>
-      </button>
-      <button class="sidebar-item" data-tab="experience">
-        <i class="fa-solid fa-timeline"></i>
-        <span>Career Timeline</span>
+        <span>Skills & Tools</span>
       </button>
       <button class="sidebar-item" data-tab="reviews">
         <i class="fa-solid fa-star"></i>
         <span>Client Reviews</span>
       </button>
-      <button class="sidebar-item" data-tab="inquiries">
-        <i class="fa-solid fa-inbox"></i>
-        <span>Inquiries CRM</span>
-        <span class="sidebar-badge" id="inquiriesBadge">0</span>
-      </button>
 
-      <div class="menu-category-title">Studio & Tools</div>
-      <button class="sidebar-item" data-tab="theme">
-        <i class="fa-solid fa-palette"></i>
-        <span>Theme & Security</span>
-      </button>
-      <button class="sidebar-item" data-tab="compressor">
-        <i class="fa-solid fa-file-image"></i>
-        <span>Image Compressor</span>
-      </button>
+      <div class="menu-category-title">System & Cloud</div>
       <button class="sidebar-item" data-tab="supabase">
         <i class="fa-solid fa-database"></i>
-        <span>Supabase & Backup</span>
+        <span>Supabase & Sync</span>
+      </button>
+      <button class="sidebar-item" data-tab="theme">
+        <i class="fa-solid fa-palette"></i>
+        <span>Theme Studio</span>
       </button>
     </div>
 
+    <!-- Sidebar Footer -->
     <div class="sidebar-footer">
       <a href="index.html" class="btn-sidebar-action" target="_blank" title="View Live Portfolio">
         <i class="fa-solid fa-arrow-up-right-from-square"></i> Live Site
@@ -136,18 +171,30 @@
 
   <!-- 3. MAIN DASHBOARD CONTENT AREA -->
   <main class="admin-main">
-    <!-- Top HUD Bar -->
+    <!-- Clean Uncluttered Topbar (NO Messy Status Badges) -->
     <header class="admin-topbar">
       <div class="topbar-left">
-        <h1 class="page-title" id="adminPageTitle">Profile & Socials</h1>
-        <div id="adminCloudStatus" class="cloud-status-indicator">
-          <span class="status-dot"></span> Checking Cloud...
+        <button class="admin-hamburger-btn" id="adminHamburgerBtn" aria-label="Toggle Navigation Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <div>
+          <h1 class="page-title" id="adminPageTitle">Dashboard Overview</h1>
+          <p class="page-desc" id="adminPageDesc">Real-time portfolio metrics, storage usage, and system health.</p>
         </div>
       </div>
 
+      <!-- Clean Quick Action Buttons -->
       <div class="topbar-right">
-        <a href="index.html" target="_blank" class="btn-view-site">
-          <i class="fa-solid fa-globe"></i> View Live Site
+        <button id="btnQuickAddWork" class="btn-topbar-action btn-primary-action" title="Add New Project">
+          <i class="fa-solid fa-plus"></i> Add Work
+        </button>
+        <button id="btnQuickExportJson" class="btn-topbar-action btn-secondary-action" title="Export data.json backup">
+          <i class="fa-solid fa-download"></i> Export JSON
+        </button>
+        <a href="index.html" target="_blank" class="btn-topbar-action btn-glass-action" title="View Live Website">
+          <i class="fa-solid fa-globe"></i> Live Site
         </a>
       </div>
     </header>
@@ -155,16 +202,160 @@
     <!-- Tab Panels Container -->
     <div class="dashboard-content">
 
-      <!-- TAB 1: PROFILE & SOCIALS -->
-      <section id="tabPanel-profile" class="admin-tab-panel active">
+      <!-- TAB 1: DASHBOARD OVERVIEW -->
+      <section id="tabPanel-overview" class="admin-tab-panel active">
+        <!-- Metric Counters Row -->
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(99, 102, 241, 0.15); color: #6366f1;">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-val" id="metricTotalProjects">8</span>
+              <span class="metric-label">Total Projects</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(6, 182, 212, 0.15); color: #06b6d4;">
+              <i class="fa-solid fa-cube"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-val" id="metricTotalServices">3</span>
+              <span class="metric-label">Active Services</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24;">
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-val" id="metricTotalReviews">4</span>
+              <span class="metric-label">Verified Reviews</span>
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+              <i class="fa-solid fa-hard-drive"></i>
+            </div>
+            <div class="metric-data">
+              <span class="metric-val" id="metricCloudFiles">24</span>
+              <span class="metric-label">Cloud Media Assets</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Supabase Storage Widget (1.8-second deferred init) -->
+        <div class="supabase-storage-widget-card" id="supabaseStorageWidget">
+          <div class="widget-header">
+            <div class="widget-title-wrap">
+              <i class="fa-solid fa-hard-drive" style="color: var(--admin-accent);"></i>
+              <h3>Supabase Cloud Storage Monitor</h3>
+            </div>
+            <button class="btn-refresh-storage" id="btnRefreshStorage" title="Refresh Storage Statistics">
+              <i class="fa-solid fa-rotate-right"></i> Refresh
+            </button>
+          </div>
+          <p class="widget-desc">Real-time usage in the <code>portfolio-media</code> bucket (1 GB Free Tier).</p>
+
+          <div class="storage-stats-bar">
+            <div class="storage-usage-info">
+              <span class="usage-numbers" id="storageUsageText">Loading Supabase Storage metrics...</span>
+              <span class="file-count" id="storageFileCount">...</span>
+            </div>
+            <div class="storage-progress-track">
+              <div class="storage-progress-fill" id="storageProgressFill" style="width: 5%;"></div>
+            </div>
+          </div>
+          <div class="storage-status-note" id="storageStatusNote">
+            <i class="fa-solid fa-circle-check" style="color: #10b981;"></i> Realtime cloud database synchronized.
+          </div>
+        </div>
+
+        <!-- Quick Actions Navigation Grid -->
+        <div class="quick-nav-grid">
+          <div class="quick-nav-card" onclick="document.querySelector('.sidebar-item[data-tab=\'projects\']').click()">
+            <i class="fa-solid fa-folder-plus"></i>
+            <h4>Manage Projects</h4>
+            <p>Add, edit subcategories, update cover images, and configure YouTube/video previews.</p>
+          </div>
+          <div class="quick-nav-card" onclick="document.querySelector('.sidebar-item[data-tab=\'profile\']').click()">
+            <i class="fa-solid fa-user-gear"></i>
+            <h4>Profile & YouTube Hub</h4>
+            <p>Update personal identity, phone, WhatsApp 8584866240, and toggle the YouTube Hub on/off.</p>
+          </div>
+          <div class="quick-nav-card" onclick="document.querySelector('.sidebar-item[data-tab=\'services\']').click()">
+            <i class="fa-solid fa-sliders"></i>
+            <h4>Services & Pricing</h4>
+            <p>Configure service cards, multi-banner 16:9 carousels, and WhatsApp prefill prompts.</p>
+          </div>
+          <div class="quick-nav-card" onclick="document.querySelector('.sidebar-item[data-tab=\'supabase\']').click()">
+            <i class="fa-solid fa-cloud-bolt"></i>
+            <h4>Supabase Sync Hub</h4>
+            <p>Seed cloud database from JSON, test connection, or download backup data.json file.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: PROJECTS & SUBCATEGORY MANAGER -->
+      <section id="tabPanel-projects" class="admin-tab-panel">
         <div class="content-header-row">
           <div class="header-info">
-            <h2>Personal Identity & Social Hub</h2>
-            <p>Update your personal information, multi-domain titles, contacts, and resume.</p>
+            <h2>Showcase Projects Manager</h2>
+            <p>Manage portfolio projects, video indicators, 16:9 thumbnails, and subcategory chips.</p>
+          </div>
+          <button id="btnAddProject" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add New Project
+          </button>
+        </div>
+
+        <div class="admin-table-wrapper">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Preview</th>
+                <th>Project Title</th>
+                <th>Category</th>
+                <th>Subcategory</th>
+                <th>Video</th>
+                <th>Rating</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="projectsTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- TAB 3: SERVICES MANAGER -->
+      <section id="tabPanel-services" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Services & Pricing Manager</h2>
+            <p>Manage service cards, multi-banner 16:9 showcases, and direct WhatsApp inquiry templates.</p>
+          </div>
+          <button id="btnAddService" class="btn-action-primary">
+            <i class="fa-solid fa-plus"></i> Add Service
+          </button>
+        </div>
+
+        <div class="services-admin-grid" id="servicesAdminList"></div>
+      </section>
+
+      <!-- TAB 4: PROFILE & YOUTUBE SOCIAL HUB -->
+      <section id="tabPanel-profile" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Personal Identity & YouTube Social Hub</h2>
+            <p>Configure owner details, WhatsApp contact, and control the YouTube Creator Hub.</p>
           </div>
         </div>
 
         <form id="profileCmsForm" style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
+          <!-- Personal Identity Fields -->
+          <h3 style="font-family: var(--admin-font-heading); font-size: 1.3rem; margin-bottom: 1.25rem; color: #fff;">Owner Identity</h3>
           <div class="modal-grid">
             <div class="admin-input-group">
               <label class="admin-label">Full Name</label>
@@ -172,13 +363,13 @@
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Professional Headline Title</label>
+              <label class="admin-label">Headline Title</label>
               <input type="text" id="profTitle" class="admin-input" required />
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Dynamic Typing Roles (comma-separated)</label>
-              <input type="text" id="profRoles" class="admin-input" placeholder="3D Motion & VFX Artist, UI/UX Designer, Graphics Artist, Web Developer" />
+              <label class="admin-label">Typing Roles (comma-separated)</label>
+              <input type="text" id="profRoles" class="admin-input" placeholder="VFX Associate, Graphics Designer, 3D Web Creator, Cinematic Video Editor" />
             </div>
 
             <div class="admin-input-group full-width">
@@ -192,17 +383,12 @@
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Direct Phone 1</label>
+              <label class="admin-label">Direct Phone</label>
               <input type="text" id="profPhone1" class="admin-input" />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Direct Phone 2</label>
-              <input type="text" id="profPhone2" class="admin-input" />
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">WhatsApp Number (with country code)</label>
+              <label class="admin-label">WhatsApp Number (e.g. 8584866240)</label>
               <input type="text" id="profWhatsApp" class="admin-input" />
             </div>
 
@@ -217,11 +403,6 @@
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Resume PDF URL</label>
-              <input type="text" id="profResumeUrl" class="admin-input" />
-            </div>
-
-            <div class="admin-input-group">
               <label class="admin-label">Avatar Image URL</label>
               <input type="text" id="profAvatar" class="admin-input" />
             </div>
@@ -232,18 +413,13 @@
             </div>
 
             <div class="admin-input-group">
+              <label class="admin-label">Instagram Profile URL</label>
+              <input type="url" id="profInstagram" class="admin-input" placeholder="https://instagram.com/Richie__rich__" />
+            </div>
+
+            <div class="admin-input-group">
               <label class="admin-label">Behance Profile URL</label>
               <input type="url" id="profBehance" class="admin-input" />
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">Dribbble Profile URL</label>
-              <input type="url" id="profDribbble" class="admin-input" />
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">GitHub Profile URL</label>
-              <input type="url" id="profGithub" class="admin-input" />
             </div>
 
             <div class="admin-input-group">
@@ -252,91 +428,85 @@
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Instagram Profile URL</label>
-              <input type="url" id="profInstagram" class="admin-input" />
+              <label class="admin-label">GitHub Profile URL</label>
+              <input type="url" id="profGithub" class="admin-input" />
+            </div>
+          </div>
+
+          <hr style="border: 0; border-top: 1px solid var(--admin-border); margin: 2rem 0;" />
+
+          <!-- YOUTUBE CREATOR CHANNEL HUB MANAGER WITH ON/OFF TOGGLE -->
+          <div class="youtube-hub-header-row">
+            <div>
+              <h3 style="font-family: var(--admin-font-heading); font-size: 1.3rem; color: #fff;">
+                <i class="fa-brands fa-youtube" style="color: #ff0000; margin-right: 6px;"></i> YouTube Creator Channel Hub
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--admin-text-muted);">
+                Control visibility of the #social-hub section and its header/drawer nav links across the site.
+              </p>
+            </div>
+            <div class="hub-toggle-wrapper">
+              <span style="font-size: 0.85rem; font-weight: 600;">Section Visibility:</span>
+              <label class="admin-switch">
+                <input type="checkbox" id="toggleYouTubeHub" checked />
+                <span class="admin-slider round"></span>
+              </label>
+              <span id="hubToggleStatus" style="font-size: 0.85rem; font-weight: 700; color: #10b981;">ON (Visible)</span>
+            </div>
+          </div>
+
+          <div class="modal-grid" style="margin-top: 1.5rem;">
+            <div class="admin-input-group">
+              <label class="admin-label">Channel Name</label>
+              <input type="text" id="hubChannelNameInput" class="admin-input" placeholder="Sonu Choudhary Visuals" />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">YouTube Channel URL</label>
-              <input type="url" id="profYoutube" class="admin-input" />
+              <label class="admin-label">Channel Handle</label>
+              <input type="text" id="hubChannelHandleInput" class="admin-input" placeholder="@SonuChoudharyVFX" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Channel URL</label>
+              <input type="url" id="hubChannelUrlInput" class="admin-input" placeholder="https://youtube.com/@SonuChoudharyCreative" />
+            </div>
+
+            <div class="admin-input-group">
+              <label class="admin-label">Subscriber Count Badge Text</label>
+              <input type="text" id="hubSubscribersBadgeInput" class="admin-input" placeholder="25.4K Subscribers" />
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Featured Showcase Video URL (Watch link, Shorts, or Embed)</label>
+              <input type="text" id="hubFeaturedVideoUrlInput" class="admin-input" placeholder="https://www.youtube.com/watch?v=dQw4w9WgXcQ" />
+            </div>
+
+            <!-- Live Player Preview -->
+            <div class="admin-input-group full-width">
+              <label class="admin-label">Featured Video Live Preview</label>
+              <div class="admin-video-preview-box">
+                <iframe id="adminHubVideoPreview" src="" allowfullscreen></iframe>
+              </div>
             </div>
           </div>
 
           <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
             <button type="submit" class="btn-action-primary">
-              <i class="fa-solid fa-floppy-disk"></i> Save Profile Changes
+              <i class="fa-solid fa-floppy-disk"></i> Save Profile & Social Changes
             </button>
           </div>
         </form>
       </section>
 
-      <!-- TAB 2: PROJECTS CMS -->
-      <section id="tabPanel-projects" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>Showcase Projects Manager</h2>
-            <p>Add, edit, reorder, or feature portfolio projects across all 5 domains.</p>
-          </div>
-          <button id="btnAddProject" class="btn-action-primary">
-            <i class="fa-solid fa-plus"></i> Add New Project
-          </button>
-        </div>
-
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Thumbnail</th>
-                <th>Project Title</th>
-                <th>Category</th>
-                <th>Subcategory</th>
-                <th>Featured</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="projectsTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 3: SERVICES CMS -->
-      <section id="tabPanel-services" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>Services & Pricing Packages</h2>
-            <p>Configure client service offerings, pricing tiers, delivery times, and features.</p>
-          </div>
-          <button id="btnAddService" class="btn-action-primary">
-            <i class="fa-solid fa-plus"></i> Add New Service
-          </button>
-        </div>
-
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Icon</th>
-                <th>Service Title</th>
-                <th>Category</th>
-                <th>Starting Price</th>
-                <th>Turnaround</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="servicesTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 4: SKILLS CMS -->
+      <!-- TAB 5: SKILLS & TOOLS -->
       <section id="tabPanel-skills" class="admin-tab-panel">
         <div class="content-header-row">
           <div class="header-info">
-            <h2>Technical & Visual Skills Matrix</h2>
-            <p>Manage skill proficiencies, category clusters, and FontAwesome icons.</p>
+            <h2>Technical Skills Matrix</h2>
+            <p>Add, edit, or adjust proficiency percentages for VFX, 3D, and design tools.</p>
           </div>
           <button id="btnAddSkill" class="btn-action-primary">
-            <i class="fa-solid fa-plus"></i> Add New Skill
+            <i class="fa-solid fa-plus"></i> Add Skill
           </button>
         </div>
 
@@ -356,42 +526,15 @@
         </div>
       </section>
 
-      <!-- TAB 5: EXPERIENCE CMS -->
-      <section id="tabPanel-experience" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>Career Milestones & Leadership Timeline</h2>
-            <p>Document leadership roles, agency tenures, and freelance achievements.</p>
-          </div>
-          <button id="btnAddExp" class="btn-action-primary">
-            <i class="fa-solid fa-plus"></i> Add Milestone
-          </button>
-        </div>
-
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Role / Position</th>
-                <th>Company / Agency</th>
-                <th>Period</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="expTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 6: REVIEWS CMS -->
+      <!-- TAB 6: CLIENT REVIEWS MODERATION -->
       <section id="tabPanel-reviews" class="admin-tab-panel">
         <div class="content-header-row">
           <div class="header-info">
-            <h2>Client Testimonials Moderation</h2>
-            <p>Approve, edit, or add client reviews and 5-star ratings.</p>
+            <h2>Client Reviews & Testimonials</h2>
+            <p>Moderate endorsements, verify community reviews, and approve star ratings.</p>
           </div>
           <button id="btnAddReview" class="btn-action-primary">
-            <i class="fa-solid fa-plus"></i> Add Review
+            <i class="fa-solid fa-plus"></i> Add Endorsement
           </button>
         </div>
 
@@ -399,11 +542,12 @@
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Avatar</th>
-                <th>Client Name</th>
-                <th>Company</th>
+                <th>Reviewer</th>
+                <th>Role / Company</th>
+                <th>Project</th>
                 <th>Rating</th>
-                <th>Status</th>
+                <th>Comment</th>
+                <th>Approved</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -412,166 +556,154 @@
         </div>
       </section>
 
-      <!-- TAB 7: INQUIRIES & LEADS CRM -->
-      <section id="tabPanel-inquiries" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>Inquiries & Leads CRM</h2>
-            <p>View client inquiries submitted through the WhatsApp estimator bot.</p>
-          </div>
-          <button id="btnExportInquiries" class="btn-action-primary">
-            <i class="fa-solid fa-file-csv"></i> Export CSV
-          </button>
-        </div>
-
-        <div class="admin-table-wrapper">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Client Info</th>
-                <th>Service</th>
-                <th>Budget</th>
-                <th>Timeline</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Quick Actions</th>
-              </tr>
-            </thead>
-            <tbody id="inquiriesTableBody"></tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- TAB 8: THEME & SECURITY STUDIO -->
-      <section id="tabPanel-theme" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>Theme Studio & Security Settings</h2>
-            <p>Customize default aesthetic themes and update your 4-digit Master Security PIN.</p>
-          </div>
-        </div>
-
-        <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border); max-width: 600px;">
-          <div class="admin-input-group" style="margin-bottom: 1.5rem;">
-            <label class="admin-label">Default Live Theme Preset</label>
-            <select id="studioThemeSelect" class="admin-select">
-              <option value="cyber-dark">Cyber Dark (Futuristic Obsidian)</option>
-              <option value="neon-cyber">Neon Cyberpunk (Vibrant Pink / Cyan)</option>
-              <option value="midnight-gold">Midnight Gold (Luxury Prestige)</option>
-              <option value="luxury-light">Luxury Light (Minimalist White)</option>
-              <option value="synthwave">Synthwave Violet (Deep Space)</option>
-            </select>
-          </div>
-
-          <div class="admin-input-group" style="margin-bottom: 2rem;">
-            <label class="admin-label">4-Digit Master PIN Code</label>
-            <input type="password" id="studioMasterPin" maxlength="6" class="admin-input" placeholder="2558" />
-            <small style="color: var(--admin-text-dim);">This PIN protects your offline admin panel.</small>
-          </div>
-
-          <button id="btnSaveThemeSettings" class="btn-action-primary">
-            <i class="fa-solid fa-floppy-disk"></i> Update Theme & PIN
-          </button>
-        </div>
-      </section>
-
-      <!-- TAB 9: IMAGE COMPRESSOR UTILITY -->
-      <section id="tabPanel-compressor" class="admin-tab-panel">
-        <div class="content-header-row">
-          <div class="header-info">
-            <h2>HTML5 Canvas Image Compressor</h2>
-            <p>Optimize heavy project artwork down to ultra-fast WebP format (< 150KB) in-browser.</p>
-          </div>
-        </div>
-
-        <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border); max-width: 800px;">
-          <input type="file" id="compressorFileInput" accept="image/*" style="display: none;" />
-          <div class="compressor-dropzone" id="compressorDropzone">
-            <i class="fa-solid fa-cloud-arrow-up compressor-icon"></i>
-            <h3>Drag & Drop Image Here, or Click to Browse</h3>
-            <p style="color: var(--admin-text-muted); font-size: 0.85rem; margin-top: 0.5rem;">Supports PNG, JPG, WebP. Compressed automatically using client-side HTML5 Canvas.</p>
-          </div>
-
-          <div id="compressorPreviewRow" class="compressor-preview-row" style="display: none;">
-            <img id="compressedThumb" class="compressor-thumb" alt="Optimized Preview" />
-            <div style="flex: 1;">
-              <div id="compressorStats" class="compressor-stats"></div>
-              <div style="display: flex; gap: 0.75rem; margin-top: 0.75rem;">
-                <button id="btnCopyCompressed" class="btn-sidebar-action">
-                  <i class="fa-regular fa-copy"></i> Copy Data URI
-                </button>
-                <button id="btnDownloadCompressed" class="btn-action-primary" style="padding: 0.4rem 0.85rem; font-size: 0.8rem;">
-                  <i class="fa-solid fa-download"></i> Download WebP
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TAB 10: SUPABASE & BACKUP SYNC HUB -->
+      <!-- TAB 7: SUPABASE CLOUD & SYNC SETTINGS -->
       <section id="tabPanel-supabase" class="admin-tab-panel">
         <div class="content-header-row">
           <div class="header-info">
-            <h2>Supabase Cloud Setup & 1-Click JSON Backup</h2>
-            <p>Connect your free Supabase PostgreSQL Cloud database or export complete JSON backups.</p>
+            <h2>Supabase Cloud Database & Synchronization</h2>
+            <p>Configure credentials, test connectivity, seed tables, and backup/restore data.json.</p>
           </div>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
-          <!-- Supabase Cloud Credentials Box -->
-          <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
-            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="fa-solid fa-cloud" style="color: var(--admin-primary);"></i> Supabase Cloud Keys
-            </h3>
+        <div class="supabase-grid-container">
+          <!-- Credentials Card -->
+          <div class="admin-surface-card">
+            <h3><i class="fa-solid fa-cloud" style="color: var(--admin-accent);"></i> Cloud API Credentials</h3>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 1.5rem;">
+              Connect your Supabase project to enable live cross-device updates and cloud persistence.
+            </p>
 
-            <div class="admin-input-group" style="margin-bottom: 1rem;">
-              <label class="admin-label">Supabase Project URL</label>
-              <input type="url" id="syncSupabaseUrl" class="admin-input" placeholder="https://xyzabcdef.supabase.co" />
-            </div>
+            <form id="supabaseCredsForm">
+              <div class="admin-input-group" style="margin-bottom: 1rem;">
+                <label class="admin-label">Supabase Project URL</label>
+                <input type="text" id="supabaseUrlInput" class="admin-input" placeholder="https://xyzcompany.supabase.co" />
+              </div>
 
-            <div class="admin-input-group" style="margin-bottom: 1.5rem;">
-              <label class="admin-label">Supabase Anon Public API Key</label>
-              <input type="password" id="syncSupabaseKey" class="admin-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." />
-            </div>
+              <div class="admin-input-group" style="margin-bottom: 1.5rem;">
+                <label class="admin-label">Supabase Anon Public Key</label>
+                <input type="password" id="supabaseKeyInput" class="admin-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5..." />
+              </div>
 
-            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-              <button id="btnSaveSupabaseCreds" class="btn-action-primary">
-                <i class="fa-solid fa-bolt"></i> Save & Connect
+              <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <button type="submit" class="btn-action-primary">
+                  <i class="fa-solid fa-plug"></i> Save & Connect
+                </button>
+                <button type="button" id="btnTestSupabase" class="btn-action-secondary">
+                  <i class="fa-solid fa-network-wired"></i> Diagnostic Test
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Cloud Tools Card -->
+          <div class="admin-surface-card">
+            <h3><i class="fa-solid fa-database" style="color: #10b981;"></i> Cloud Maintenance Tools</h3>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 1.5rem;">
+              One-click cloud database initialization, backup exports, and demo data wipe.
+            </p>
+
+            <div class="tools-actions-stack">
+              <button id="btnSeedDatabase" class="btn-tool-action">
+                <i class="fa-solid fa-cloud-arrow-up" style="color: #6366f1;"></i>
+                <div>
+                  <strong>Seed Live Supabase Database from JSON</strong>
+                  <span>One-click cloud initialization from local baseline.</span>
+                </div>
               </button>
-              <button id="btnTestSupabase" class="btn-sidebar-action">
-                <i class="fa-solid fa-vial"></i> Test Connection
+
+              <button id="btnExportJson" class="btn-tool-action">
+                <i class="fa-solid fa-file-export" style="color: #06b6d4;"></i>
+                <div>
+                  <strong>Export data.json Backup</strong>
+                  <span>Download full database as JSON file for GitHub Pages.</span>
+                </div>
               </button>
-              <button id="btnPushAllToCloud" class="btn-sidebar-action" title="Push all local portfolio data into Supabase Cloud tables">
-                <i class="fa-solid fa-cloud-arrow-up"></i> Push All Data to Cloud
+
+              <label class="btn-tool-action" style="cursor: pointer;">
+                <i class="fa-solid fa-file-import" style="color: #10b981;"></i>
+                <div>
+                  <strong>Import data.json File</strong>
+                  <span>Restore full database from an existing backup JSON file.</span>
+                </div>
+                <input type="file" id="importJsonFileInput" accept=".json" style="display: none;" />
+              </label>
+
+              <button id="btnWipeDemoData" class="btn-tool-action btn-danger-tool">
+                <i class="fa-solid fa-trash-can" style="color: #ef4444;"></i>
+                <div>
+                  <strong>Wipe All Demo Data</strong>
+                  <span>Clear sample projects and reviews to provide a clean slate for personal works.</span>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 8: THEME & DISPLAY STUDIO -->
+      <section id="tabPanel-theme" class="admin-tab-panel">
+        <div class="content-header-row">
+          <div class="header-info">
+            <h2>Theme & Security Studio</h2>
+            <p>Change portfolio visual color palette and reset your Master Security PIN.</p>
+          </div>
+        </div>
+
+        <div class="supabase-grid-container">
+          <!-- Theme Preset Switcher -->
+          <div class="admin-surface-card">
+            <h3><i class="fa-solid fa-palette" style="color: var(--admin-primary);"></i> Accent Theme Presets</h3>
+            <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 1.5rem;">
+              Select a global aesthetic theme for the live portfolio:
+            </p>
+
+            <div class="theme-picker-grid">
+              <button class="theme-pick-card active" data-theme-id="cyber-dark">
+                <div class="theme-swatch" style="background: linear-gradient(135deg, #6366f1, #06b6d4, #ec4899);"></div>
+                <span>Cyber Dark</span>
+              </button>
+              <button class="theme-pick-card" data-theme-id="neon-cyber">
+                <div class="theme-swatch" style="background: linear-gradient(135deg, #ec4899, #a855f7, #00f0ff);"></div>
+                <span>Neon Cyber</span>
+              </button>
+              <button class="theme-pick-card" data-theme-id="midnight-gold">
+                <div class="theme-swatch" style="background: linear-gradient(135deg, #facc15, #f59e0b, #d97706);"></div>
+                <span>Midnight Gold</span>
+              </button>
+              <button class="theme-pick-card" data-theme-id="luxury-light">
+                <div class="theme-swatch" style="background: linear-gradient(135deg, #4f46e5, #0891b2, #ffffff);"></div>
+                <span>Luxury Light</span>
               </button>
             </div>
           </div>
 
-          <!-- JSON Backup & Restore Box -->
-          <div style="background: var(--admin-bg-surface); padding: 2rem; border-radius: 14px; border: 1px solid var(--admin-border);">
-            <h3 style="margin-bottom: 1.25rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
-              <i class="fa-solid fa-file-export" style="color: var(--admin-accent);"></i> 1-Click JSON Backup & Restore
-            </h3>
-
+          <!-- Master PIN Reset -->
+          <div class="admin-surface-card">
+            <h3><i class="fa-solid fa-shield-halved" style="color: #ec4899;"></i> Master Security PIN</h3>
             <p style="font-size: 0.85rem; color: var(--admin-text-muted); margin-bottom: 1.5rem;">
-              Download a complete standalone <code>data.json</code> file or restore existing backups in 1-click without writing any SQL.
+              Update your private 4-digit PIN used to unlock this CMS dashboard.
             </p>
 
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-              <button id="btnExportJson" class="btn-action-primary" style="background: linear-gradient(135deg, #10b981, #06b6d4);">
-                <i class="fa-solid fa-download"></i> 1-Click Download JSON Backup
-              </button>
+            <form id="changePinForm">
+              <div class="admin-input-group" style="margin-bottom: 1rem;">
+                <label class="admin-label">Current PIN</label>
+                <input type="password" id="currentPinInput" class="admin-input" placeholder="••••" maxlength="8" required />
+              </div>
 
-              <label class="btn-sidebar-action" style="justify-content: center; padding: 0.75rem; cursor: pointer;">
-                <i class="fa-solid fa-upload"></i> Restore from JSON Backup
-                <input type="file" id="jsonFileInput" accept=".json" style="display: none;" />
-              </label>
+              <div class="admin-input-group" style="margin-bottom: 1rem;">
+                <label class="admin-label">New PIN (4–8 digits)</label>
+                <input type="password" id="newPinInput" class="admin-input" placeholder="••••" maxlength="8" required />
+              </div>
 
-              <button id="btnFactoryReset" class="btn-sidebar-action" style="color: var(--admin-danger); border-color: rgba(239, 68, 68, 0.3);">
-                <i class="fa-solid fa-rotate-left"></i> Reset to Factory Seed
+              <div class="admin-input-group" style="margin-bottom: 1.5rem;">
+                <label class="admin-label">Confirm New PIN</label>
+                <input type="password" id="confirmPinInput" class="admin-input" placeholder="••••" maxlength="8" required />
+              </div>
+
+              <button type="submit" class="btn-action-primary">
+                <i class="fa-solid fa-key"></i> Update Security PIN
               </button>
-            </div>
+            </form>
           </div>
         </div>
       </section>
@@ -579,11 +711,11 @@
     </div>
   </main>
 
-  <!-- MODAL: ADD / EDIT PROJECT -->
+  <!-- MODAL: ADD / EDIT PROJECT (With Dual Video & YouTube Thumbnail Fetcher) -->
   <div id="projectModal" class="admin-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title" id="projectModalTitle">Add New Showcase Project</h3>
+        <h3 class="modal-title" id="projectModalTitle">Add New Project</h3>
         <button id="closeProjectModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
@@ -593,69 +725,102 @@
           <div class="modal-grid">
             <div class="admin-input-group full-width">
               <label class="admin-label">Project Title *</label>
-              <input type="text" id="projTitle" class="admin-input" required />
+              <input type="text" id="projTitle" class="admin-input" placeholder="e.g. Royal Heritage - Luxury Wedding Cinematic Film" required />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Main Category</label>
-              <select id="projCategory" class="admin-select">
-                <option value="3d-vfx">3D Motion & VFX</option>
-                <option value="ui-ux">UI/UX Design</option>
-                <option value="graphics">Graphics & Branding</option>
-                <option value="web-dev">Web Development</option>
-                <option value="vfx-video">Video & Color</option>
+              <label class="admin-label">Primary Category *</label>
+              <select id="projCategory" class="admin-select" required>
+                <option value="vfx-video">VFX & Video</option>
+                <option value="graphics">Graphics & Albums</option>
+                <option value="web-dev">3D & Web</option>
               </select>
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Subcategory Pill (e.g. Cinema 4D, Figma)</label>
-              <input type="text" id="projSubcategory" class="admin-input" />
+              <label class="admin-label">Subcategory *</label>
+              <input type="text" id="projSubcategory" class="admin-input" list="subcatSuggestions" placeholder="e.g. Wedding Films, VFX Compositing, Wedding Albums" required />
+              <datalist id="subcatSuggestions">
+                <option value="VFX Compositing"></option>
+                <option value="Wedding Films"></option>
+                <option value="Wedding Albums"></option>
+                <option value="3D Web Apps"></option>
+                <option value="Teasers & Cinematic"></option>
+                <option value="Posters & Branding"></option>
+                <option value="YouTube Thumbnails"></option>
+                <option value="UI/UX & Figma"></option>
+              </datalist>
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Main Thumbnail Image URL *</label>
-              <input type="url" id="projThumb" class="admin-input" required />
+              <label class="admin-label">Cover Thumbnail Image URL *</label>
+              <div style="display: flex; gap: 0.5rem;">
+                <input type="text" id="projThumbnail" class="admin-input" placeholder="https://images.unsplash.com/..." required />
+                <button type="button" id="btnUseYtThumb" class="btn-action-secondary" style="white-space: nowrap; font-size: 0.8rem;" title="Auto-fetch HD thumbnail from YouTube link">
+                  <i class="fa-brands fa-youtube"></i> Use YT Cover
+                </button>
+              </div>
+            </div>
+
+            <!-- Dual Video Integration -->
+            <div class="admin-input-group full-width">
+              <label class="admin-label">YouTube Video URL (Watch link, Shorts, or Embed)</label>
+              <input type="text" id="projVideoUrl" class="admin-input" placeholder="https://www.youtube.com/watch?v=..." />
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Gallery Images (One URL per line for Lightbox Carousel)</label>
-              <textarea id="projImages" class="admin-textarea" rows="3" placeholder="https://images.unsplash.com/...&#10;https://images.unsplash.com/..."></textarea>
+              <label class="admin-label">Or Local MP4/WebM Video File</label>
+              <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input type="file" id="projLocalVideoFile" accept="video/mp4,video/webm" class="admin-input" />
+                <button type="button" id="btnRemoveVideo" class="btn-action-secondary" style="font-size: 0.8rem; color: #ef4444;" title="Remove video">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </div>
+            </div>
+
+            <!-- 16:9 Video Live Preview in Project Modal -->
+            <div class="admin-input-group full-width" id="projVideoPreviewWrap" style="display: none;">
+              <label class="admin-label">Video Live Preview</label>
+              <div class="admin-video-preview-box">
+                <iframe id="projVideoIframePreview" src="" allowfullscreen></iframe>
+              </div>
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Video Embed URL (YouTube/Vimeo/MP4)</label>
-              <input type="text" id="projVideoUrl" class="admin-input" placeholder="https://www.youtube.com/embed/dQw4w9WgXcQ" />
+              <label class="admin-label">Gallery Images (comma-separated URLs for multi-image project)</label>
+              <textarea id="projImages" class="admin-textarea" rows="2" placeholder="https://..., https://..."></textarea>
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Client Name</label>
-              <input type="text" id="projClient" class="admin-input" />
+              <label class="admin-label">Client Name / Organization</label>
+              <input type="text" id="projClient" class="admin-input" placeholder="Singhania Royal Celebrations" />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Year / Timeframe</label>
+              <label class="admin-label">Year / Duration</label>
               <input type="text" id="projYear" class="admin-input" placeholder="2025" />
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Tech Stack Tags (comma-separated)</label>
-              <input type="text" id="projTags" class="admin-input" placeholder="Cinema 4D, Octane Render, Figma, React" />
+              <label class="admin-label">Software Tools & Tags (comma-separated)</label>
+              <input type="text" id="projTags" class="admin-input" placeholder="DaVinci Resolve, Nuke, Premiere Pro, Photoshop" />
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Description & Case Study Summary</label>
-              <textarea id="projDesc" class="admin-textarea" rows="3"></textarea>
+              <label class="admin-label">Detailed Project Description *</label>
+              <textarea id="projDesc" class="admin-textarea" rows="4" placeholder="Describe the creative challenges, visual storytelling, software tools, and deliverables..." required></textarea>
             </div>
 
-            <div class="admin-input-group full-width" style="flex-direction: row; align-items: center; gap: 0.75rem;">
+            <div class="admin-input-group full-width" style="display: flex; align-items: center; gap: 0.75rem;">
               <input type="checkbox" id="projFeatured" style="width: 18px; height: 18px; accent-color: var(--admin-primary);" />
-              <label for="projFeatured" class="admin-label" style="cursor: pointer;">Mark as Featured Project on Hero</label>
+              <label for="projFeatured" style="font-size: 0.9rem; font-weight: 600; cursor: pointer;">Feature on 16:9 Hero Showcase Auto-Slider</label>
             </div>
           </div>
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn-action-primary">Save Project</button>
+          <button type="button" class="btn-action-secondary" onclick="document.getElementById('closeProjectModal').click()">Cancel</button>
+          <button type="submit" class="btn-action-primary"><i class="fa-solid fa-floppy-disk"></i> Save Project</button>
         </div>
       </form>
     </div>
@@ -665,59 +830,47 @@
   <div id="serviceModal" class="admin-modal">
     <div class="modal-card">
       <div class="modal-header">
-        <h3 class="modal-title">Add / Edit Service Offering</h3>
+        <h3 class="modal-title" id="serviceModalTitle">Add / Edit Service</h3>
         <button id="closeServiceModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
       </div>
 
       <form id="serviceForm">
         <div class="modal-body">
-          <input type="hidden" id="servId" />
+          <input type="hidden" id="serviceId" />
           <div class="modal-grid">
-            <div class="admin-input-group">
+            <div class="admin-input-group full-width">
               <label class="admin-label">Service Title *</label>
-              <input type="text" id="servTitle" class="admin-input" required />
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">Category</label>
-              <select id="servCategory" class="admin-select">
-                <option value="3d-vfx">3D & VFX</option>
-                <option value="ui-ux">UI/UX Design</option>
-                <option value="graphics">Graphics</option>
-                <option value="web-dev">Web Development</option>
-                <option value="vfx-video">Video Editing</option>
-                <option value="consulting">Consulting</option>
-              </select>
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">FontAwesome Icon Class</label>
-              <input type="text" id="servIcon" class="admin-input" placeholder="fa-cube" />
+              <input type="text" id="serviceTitle" class="admin-input" placeholder="e.g. Brand Identity & Graphics Design" required />
             </div>
 
             <div class="admin-input-group">
               <label class="admin-label">Starting Price</label>
-              <input type="text" id="servPrice" class="admin-input" placeholder="₹15,000 / $250" />
+              <input type="text" id="servicePrice" class="admin-input" placeholder="₹8,000 / $120" />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Estimated Delivery Time</label>
-              <input type="text" id="servDelivery" class="admin-input" placeholder="3 - 7 Days" />
+              <label class="admin-label">Turnaround Delivery Time</label>
+              <input type="text" id="serviceTime" class="admin-input" placeholder="2 - 4 Days" />
             </div>
 
-            <div class="admin-input-group">
-              <label class="admin-label">WhatsApp Prefill Message</label>
-              <input type="text" id="servWaMsg" class="admin-input" />
+            <div class="admin-input-group full-width">
+              <label class="admin-label">FontAwesome Icon Class</label>
+              <input type="text" id="serviceIcon" class="admin-input" placeholder="fa-bezier-curve" />
             </div>
 
             <div class="admin-input-group full-width">
               <label class="admin-label">Service Description</label>
-              <textarea id="servDesc" class="admin-textarea" rows="2"></textarea>
+              <textarea id="serviceDesc" class="admin-textarea" rows="3" required></textarea>
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Features & Deliverables List (One per line)</label>
-              <textarea id="servFeatures" class="admin-textarea" rows="4" placeholder="Feature 1&#10;Feature 2&#10;Feature 3"></textarea>
+              <label class="admin-label">Key Features & Deliverables (One per line)</label>
+              <textarea id="serviceFeatures" class="admin-textarea" rows="4" placeholder="Viral High-CTR YouTube Thumbnails&#10;Luxury Wedding Album Designing&#10;Posters & Hoardings"></textarea>
+            </div>
+
+            <div class="admin-input-group full-width">
+              <label class="admin-label">16:9 Showcase Banner Image URLs (comma-separated for slider)</label>
+              <textarea id="serviceBanners" class="admin-textarea" rows="2" placeholder="https://..., https://..."></textarea>
             </div>
           </div>
         </div>
@@ -731,7 +884,7 @@
 
   <!-- MODAL: ADD / EDIT SKILL -->
   <div id="skillModal" class="admin-modal">
-    <div class="modal-card" style="max-width: 500px;">
+    <div class="modal-card">
       <div class="modal-header">
         <h3 class="modal-title">Add / Edit Skill</h3>
         <button id="closeSkillModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
@@ -748,17 +901,16 @@
           <div class="admin-input-group" style="margin-bottom: 1rem;">
             <label class="admin-label">Category</label>
             <select id="skillCat" class="admin-select">
-              <option value="3D & Motion">3D & Motion</option>
-              <option value="UI/UX Design">UI/UX Design</option>
-              <option value="Graphics Design">Graphics Design</option>
-              <option value="Web Development">Web Development</option>
               <option value="VFX & Video">VFX & Video</option>
+              <option value="Graphics & Design">Graphics & Design</option>
+              <option value="3D & Animation">3D & Animation</option>
+              <option value="Web & 3D">Web & 3D</option>
             </select>
           </div>
 
           <div class="admin-input-group" style="margin-bottom: 1rem;">
             <label class="admin-label">Proficiency Percentage (0 - 100)</label>
-            <input type="number" id="skillLevel" min="1" max="100" class="admin-input" value="90" />
+            <input type="number" id="skillLevel" min="1" max="100" class="admin-input" value="95" />
           </div>
 
           <div class="admin-input-group">
@@ -769,52 +921,6 @@
 
         <div class="modal-footer">
           <button type="submit" class="btn-action-primary">Save Skill</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: ADD / EDIT EXPERIENCE -->
-  <div id="expModal" class="admin-modal">
-    <div class="modal-card">
-      <div class="modal-header">
-        <h3 class="modal-title">Add / Edit Career Milestone</h3>
-        <button id="closeExpModal" class="modal-close-btn"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <form id="expForm">
-        <div class="modal-body">
-          <input type="hidden" id="expId" />
-          <div class="modal-grid">
-            <div class="admin-input-group">
-              <label class="admin-label">Role / Job Title *</label>
-              <input type="text" id="expRole" class="admin-input" required />
-            </div>
-
-            <div class="admin-input-group">
-              <label class="admin-label">Company / Studio *</label>
-              <input type="text" id="expCompany" class="admin-input" required />
-            </div>
-
-            <div class="admin-input-group full-width">
-              <label class="admin-label">Timeframe (e.g. 2023 - Present)</label>
-              <input type="text" id="expPeriod" class="admin-input" placeholder="2023 - Present" required />
-            </div>
-
-            <div class="admin-input-group full-width">
-              <label class="admin-label">Role Overview Description</label>
-              <textarea id="expDesc" class="admin-textarea" rows="2"></textarea>
-            </div>
-
-            <div class="admin-input-group full-width">
-              <label class="admin-label">Key Achievements & Highlights (One per line)</label>
-              <textarea id="expHighlights" class="admin-textarea" rows="3"></textarea>
-            </div>
-          </div>
-        </div>
-
-        <div class="modal-footer">
-          <button type="submit" class="btn-action-primary">Save Milestone</button>
         </div>
       </form>
     </div>
@@ -833,17 +939,17 @@
           <input type="hidden" id="revId" />
           <div class="modal-grid">
             <div class="admin-input-group">
-              <label class="admin-label">Client Name *</label>
+              <label class="admin-label">Client / Reviewer Name *</label>
               <input type="text" id="revName" class="admin-input" required />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Designation / Role</label>
-              <input type="text" id="revRole" class="admin-input" placeholder="CEO / Product Lead" />
+              <label class="admin-label">Role / Designation</label>
+              <input type="text" id="revRole" class="admin-input" placeholder="Director / Founder" />
             </div>
 
             <div class="admin-input-group">
-              <label class="admin-label">Company Name</label>
+              <label class="admin-label">Company / Studio</label>
               <input type="text" id="revCompany" class="admin-input" />
             </div>
 
@@ -862,12 +968,12 @@
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Referenced Project</label>
+              <label class="admin-label">Associated Project Title</label>
               <input type="text" id="revProject" class="admin-input" />
             </div>
 
             <div class="admin-input-group full-width">
-              <label class="admin-label">Review Testimonial Text *</label>
+              <label class="admin-label">Review Testimonial *</label>
               <textarea id="revText" class="admin-textarea" rows="3" required></textarea>
             </div>
           </div>
@@ -880,12 +986,13 @@
     </div>
   </div>
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
+  <!-- TOAST NOTIFICATION HUB -->
   <div id="toast-container"></div>
 
   <!-- Core Scripts -->
   <script src="js/supabase-config.js"></script>
   <script src="js/data-store.js"></script>
+  <script src="js/data.js"></script>
   <script src="js/admin.js"></script>
 </body>
 </html>

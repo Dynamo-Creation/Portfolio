@@ -101,12 +101,21 @@ const SupabaseConfig = (() => {
 
     try {
       const testClient = window.supabase.createClient(url, key);
-      const { data, error } = await testClient
-        .from('portfolio_profile')
-        .select('name')
+      // Try testing portfolio_data table first, then fallback to portfolio_profile
+      let { data, error } = await testClient
+        .from('portfolio_data')
+        .select('key')
         .limit(1);
 
-      if (error && error.code !== 'PGRST116') {
+      if (error && error.code === '42P01') {
+        const fallbackRes = await testClient
+          .from('portfolio_profile')
+          .select('name')
+          .limit(1);
+        error = fallbackRes.error;
+      }
+
+      if (error && error.code !== 'PGRST116' && error.code !== 'PGRST204') {
         _isConnected = false;
         return { success: false, message: `Database error: ${error.message}` };
       }

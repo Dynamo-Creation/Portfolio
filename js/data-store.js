@@ -35,6 +35,11 @@ const DataStore = (() => {
     if (cached) {
       try {
         _data = JSON.parse(cached);
+        // Scrub any legacy plaintext masterPin from public storage cache
+        if (_data?.settings?.masterPin) {
+          delete _data.settings.masterPin;
+          saveToCache(_data);
+        }
         notify('cache');
       } catch (e) {
         console.warn('Cached data corrupt, re-fetching...');
@@ -88,7 +93,20 @@ const DataStore = (() => {
     if (!supabase) return false;
 
     try {
-      // Parallel fetch from all tables
+      // 1. Try centralized portfolio_data key-value table first
+      try {
+        const { data: unifiedRows, error: uErr } = await supabase.from('portfolio_data').select('*').eq('key', 'main_portfolio').limit(1);
+        if (!uErr && unifiedRows && unifiedRows.length > 0 && unifiedRows[0].data) {
+          _data = { ..._data, ...unifiedRows[0].data };
+          saveToCache(_data);
+          notify('cloud-sync');
+          return true;
+        }
+      } catch (err) {
+        console.warn('Unified portfolio_data query check:', err);
+      }
+
+      // Parallel fetch from all tables as fallback
       const [
         { data: profiles },
         { data: projects },
@@ -210,17 +228,24 @@ const DataStore = (() => {
 
       if (settings && settings.length > 0) {
         const s = settings[0];
+        // If cloud contains a salted PIN hash, sync securely to admin storage
+        if (s.master_pin_hash && s.master_pin_hash !== '2558' && s.master_pin_hash.includes(':')) {
+          if (!localStorage.getItem('sc_admin_pin_credential')) {
+            localStorage.setItem('sc_admin_pin_credential', s.master_pin_hash);
+          }
+        }
+
         cloudData.settings = {
           ...cloudData.settings,
           currentTheme: s.current_theme || cloudData.settings?.currentTheme || 'cyber-dark',
           primaryColor: s.primary_color || cloudData.settings?.primaryColor || '#6366f1',
           accentColor: s.accent_color || cloudData.settings?.accentColor || '#06b6d4',
           secondaryColor: s.secondary_color || cloudData.settings?.secondaryColor || '#ec4899',
-          masterPin: s.master_pin_hash || cloudData.settings?.masterPin || '2558',
           particleSpeed: Number(s.particle_speed) || 0.8,
           particleCount: Number(s.particle_count) || 80,
           heroMode: s.hero_mode || 'dynamic-showcase'
         };
+        delete cloudData.settings.masterPin;
       }
 
       _data = cloudData;
@@ -267,7 +292,13 @@ const DataStore = (() => {
     return all ? list : list.filter(r => r.approved !== false);
   };
   const getInquiries = () => _data?.inquiries || [];
-  const getSettings = () => _data?.settings || {};
+  const getSettings = () => {
+    if (!_data?.settings) return {};
+    const safeSettings = { ..._data.settings };
+    delete safeSettings.masterPin;
+    delete safeSettings.master_pin_hash;
+    return safeSettings;
+  };
 
   // Generic Save and Sync Local + Cloud
   const updateData = async (newData, updateCloud = true) => {
@@ -331,12 +362,13 @@ const DataStore = (() => {
       // 2. Settings Upsert / Update
       if (_data.settings) {
         try {
+          const adminPinCred = localStorage.getItem('sc_admin_pin_credential') || null;
           const settingsPayload = {
             current_theme: _data.settings.currentTheme || 'cyber-dark',
             primary_color: _data.settings.primaryColor || '#6366f1',
             accent_color: _data.settings.accentColor || '#06b6d4',
             secondary_color: _data.settings.secondaryColor || '#ec4899',
-            master_pin_hash: _data.settings.masterPin || '2558',
+            master_pin_hash: adminPinCred,
             particle_speed: Number(_data.settings.particleSpeed) || 0.8,
             particle_count: Number(_data.settings.particleCount) || 80,
             hero_mode: _data.settings.heroMode || 'dynamic-showcase',
@@ -522,11 +554,103 @@ const DataStore = (() => {
           status: 'New'
         }]);
       } catch (e) {
-        console.warn('Inquiry cloud insert fallback to local cache:', e);
+        console.warn('Inquiry cloud insert fallback:', e);
+      }
+      try {
+        await supabase.from('messages').insert([{
+          name: inquiryData.name,
+          email: inquiryData.email,
+          subject: inquiryData.service || 'Portfolio Inquiry',
+          message: inquiryData.message
+        }]);
+      } catch (e) {
+        console.warn('Messages table insert fallback:', e);
       }
     }
 
     return newInquiry;
+  };
+
+  // Direct Contact Message Submission
+  const submitMessage = async (name, email, subject, message) => {
+    return await submitInquiry({
+      name,
+      email,
+      service: subject || 'Direct Contact Form',
+      message
+    });
+  };
+
+  // Interactive Project Review Submission & Realtime Rating Recalculation
+  const submitReview = async (projectId, userName, rating, comment, avatar) => {
+    const newRev = {
+      id: 'rev-' + Date.now(),
+      slug_id: 'rev-' + Date.now(),
+      project_id: projectId,
+      project: projectId,
+      name: userName || 'Verified Visitor',
+      role: 'Client / Reviewer',
+      company: 'Community Review',
+      avatar: avatar || `https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80`,
+      rating: Math.min(5, Math.max(1, parseInt(rating) || 5)),
+      text: comment,
+      approved: true,
+      created_at: new Date().toISOString()
+    };
+
+    if (!_data.reviews) _data.reviews = [];
+    _data.reviews.unshift(newRev);
+
+    // Recalculate average rating for project
+    if (_data.projects) {
+      const proj = _data.projects.find(p => p.id === projectId || p.title === projectId);
+      if (proj) {
+        const projReviews = _data.reviews.filter(r => (r.project_id === projectId || r.project === proj.title || r.project === proj.id) && r.approved !== false);
+        const avg = projReviews.reduce((sum, r) => sum + (r.rating || 5), 0) / (projReviews.length || 1);
+        proj.rating = parseFloat(avg.toFixed(1));
+      }
+    }
+
+    saveToCache(_data);
+    notify('review-added');
+
+    // Async push to Supabase
+    const supabase = SupabaseConfig.getClient();
+    if (supabase) {
+      try {
+        await supabase.from('reviews').insert([{
+          project_id: projectId,
+          user_name: newRev.name,
+          user_avatar: newRev.avatar,
+          rating: newRev.rating,
+          comment: newRev.text
+        }]);
+      } catch (e) {
+        console.warn('Reviews table insert fallback:', e);
+      }
+      try {
+        await supabase.from('portfolio_reviews').insert([{
+          slug_id: newRev.id,
+          name: newRev.name,
+          role: newRev.role,
+          company: newRev.company,
+          avatar: newRev.avatar,
+          rating: newRev.rating,
+          text: newRev.text,
+          project: projectId,
+          approved: true
+        }]);
+      } catch (e) {
+        console.warn('portfolio_reviews insert fallback:', e);
+      }
+      try {
+        await pushToCloud();
+      } catch (e) {
+        console.warn('Cloud sync after review fallback:', e);
+      }
+    }
+
+    return { success: true, review: newRev };
   };
 
   // Export / Backup as JSON file
@@ -581,6 +705,8 @@ const DataStore = (() => {
     getSettings,
     updateData,
     submitInquiry,
+    submitMessage,
+    submitReview,
     syncFromCloud,
     pushToCloud,
     exportJSON,
@@ -588,3 +714,39 @@ const DataStore = (() => {
     resetToFactory
   };
 })();
+
+// Global Expose
+window.DataStore = DataStore;
+window.PortfolioData = DataStore;
+
+/* --- UNIVERSAL YOUTUBE PLAYER ENGINE --- */
+window.YouTubeHelper = {
+  extractVideoId: function(url) {
+    if (!url || typeof url !== 'string') return null;
+    url = url.trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+    const iframeMatch = url.match(/src=["'](?:https?:\/\/)?(?:www\.)?youtube(?:-nocookie)?\.com\/embed\/([a-zA-Z0-9_-]{11})/i);
+    if (iframeMatch) return iframeMatch[1];
+    const shortsMatch = url.match(/(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/i);
+    if (shortsMatch) return shortsMatch[1];
+    const liveMatch = url.match(/(?:youtube\.com\/live\/)([a-zA-Z0-9_-]{11})/i);
+    if (liveMatch) return liveMatch[1];
+    const shortlinkMatch = url.match(/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/i);
+    if (shortlinkMatch) return shortlinkMatch[1];
+    const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]{11})/i);
+    if (watchMatch) return watchMatch[1];
+    const embedMatch = url.match(/(?:youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/i);
+    if (embedMatch) return embedMatch[1];
+    return null;
+  },
+  getThumbnailUrl: function(url) {
+    const id = this.extractVideoId(url);
+    if (!id) return '';
+    return `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+  },
+  getEmbedUrl: function(url, autoplay = true) {
+    const id = this.extractVideoId(url);
+    if (!id) return '';
+    return `https://www.youtube-nocookie.com/embed/${id}?autoplay=${autoplay ? 1 : 0}&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+  }
+};

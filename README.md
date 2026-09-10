@@ -27,7 +27,8 @@ This project is a high-performance, responsive, luxury 3D portfolio and CMS ecos
 - **Multi-Media Lightbox**: High-res multi-image zoom carousel and embedded video player (YouTube/Vimeo/MP4).
 - **WhatsApp Smart Automation Bot**: Interactive project estimator calculating quotes and formatting one-click WhatsApp inquiries.
 - **Full No-Code Admin CMS (`admin.html`)**:
-  - Dual Authentication (Offline 4-Digit Master PIN `2558` + Supabase Cloud Email/Password).
+  - Dual Authentication (Offline Salted SHA-256 Master Security PIN + Supabase Cloud Email/Password).
+  - Anti-Brute-Force Rate Limiting Shield (5-attempt lockout defense).
   - 8+ CRUD Management Modules (Profile, Projects, Services, Skills, Experience, Reviews, Inquiries, Theme Studio).
   - Built-in HTML5 Canvas Image Compressor (< 150KB WebP optimization).
   - 1-Click JSON Backup (`data.json`) and Instant Restore.
@@ -111,8 +112,9 @@ git push -u origin main
 ## 🛠️ No-Code Admin CMS Manual & Security
 
 - **Admin URL**: Open `admin.html` in any browser or visit `https://<your-domain>/admin.html`.
-- **Default Master PIN**: `2558` (Can be updated anytime in the **Theme & Security** tab).
-- **Dual Login Support**: Log in with either the 4-digit Master PIN or your Supabase Cloud credentials.
+- **Master Security PIN**: Protected by Web Crypto API salted SHA-256 cryptographic hashing. On first launch, you are prompted to configure your private 4–8 digit PIN. Can be updated anytime in the **Theme & Security** tab.
+- **Anti-Brute-Force Shield**: Enforces an attempt limit (5 attempts) with exponential lockouts to block automated guessing attacks.
+- **Dual Login Support**: Log in with either your Master Security PIN or your Supabase Cloud credentials.
 - **Offline Resilience**: If Supabase is offline or not configured, the site runs seamlessly using `data.json` and browser `localStorage`.
 - **1-Click Backup**: Under **"Supabase & Backup"**, click **"1-Click Download JSON Backup"** to export an instant snapshot.
 

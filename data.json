@@ -1,417 +1,388 @@
 {
   "profile": {
     "name": "Sonu Choudhary",
-    "title": "Creative Technologist & Visual Director",
+    "title": "VFX Associate & Visual Creative",
     "roles": [
-      "3D Motion & VFX Artist",
-      "UI/UX & Product Designer",
-      "Graphics & Brand Identity Artist",
-      "Full-Stack Web Developer",
+      "VFX Associate",
+      "Graphics Designer",
+      "3D Web Creator",
       "Cinematic Video Editor"
     ],
-    "tagline": "Crafting immersive 3D digital experiences, cinematic visual effects, and high-conversion UI/UX interfaces.",
-    "bio": "I am a multi-disciplinary Creative Technologist with over 6+ years of industry experience blending high-end 3D motion design, cutting-edge VFX, human-centered UI/UX design, and robust modern web engineering. I transform bold ideas into breathtaking visual realities that captivate audiences and drive measurable business growth.",
+    "tagline": "Transforming bold concepts into viral visuals, high-conversion 3D web experiences, cinematic stories, 2D & 3D Animation.",
+    "bio": "I’m a VFX Associate and Visual Creative passionate about transforming ideas into engaging visual experiences. My work spans VFX compositing, cinematic video editing, wedding films, wedding album designing, motion graphics, and graphic design. I focus on creating visually polished content with strong storytelling, attention to detail, and a cinematic aesthetic. From crafting memorable wedding moments and designing elegant albums to producing dynamic graphics and visual effects, I bring creativity and technical precision to every project. Over 5+ years of experience helping brands, creators, and studios stand out through bespoke digital design and interactive storytelling.",
     "contact": {
+      "phone": "+91 8620028817",
       "phone1": "+91 8620028817",
       "phone2": "+91 8584866240",
-      "whatsapp": "+91 8584866240",
+      "whatsapp": "8584866240",
       "email": "Sonu25580@gmail.com",
-      "location": "Kolkata & Remote Worldwide",
-      "availability": "Available for Select Freelance & Full-time Projects"
+      "location": "Based in: Kolkata, West Bengal, India",
+      "availability": "Open to Pan-India Projects & Remote Collaboration"
     },
     "socials": {
-      "behance": "https://behance.net",
-      "dribbble": "https://dribbble.com",
-      "github": "https://github.com",
-      "linkedin": "https://linkedin.com",
-      "instagram": "https://instagram.com",
-      "youtube": "https://youtube.com"
+      "instagram": "https://instagram.com/Richie__rich__",
+      "youtube": "https://youtube.com/@SonuChoudharyCreative",
+      "behance": "https://behance.net/sonuchoudhary",
+      "linkedin": "https://linkedin.com/in/sonu-choudhary",
+      "github": "https://github.com/sonuchoudhary",
+      "dribbble": "https://dribbble.com/sonuchoudhary"
     },
     "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
     "heroImage": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-    "resumeUrl": "#"
+    "resumeUrl": "#",
+    "youtubeHub": {
+      "enabled": true,
+      "channelName": "Sonu Choudhary Visuals",
+      "channelHandle": "@SonuChoudharyVFX",
+      "channelUrl": "https://youtube.com/@SonuChoudharyCreative",
+      "subscribersBadge": "25.4K Subscribers",
+      "featuredVideoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "featuredVideoTitle": "Cinematic VFX & Motion Graphics Showreel"
+    }
   },
   "projects": [
     {
       "id": "proj-1",
-      "title": "CyberMatrix 3D Holographic Showreel",
-      "category": "3d-vfx",
-      "subcategory": "3D Motion & CGI",
-      "description": "An award-winning futuristic 3D motion title sequence and holographic HUD design created with Cinema 4D, Octane Render, and Unreal Engine 5. Featuring dynamic particle simulations, procedural shaders, and cinematic sound design.",
-      "thumbnail": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80",
+      "title": "CyberMatrix - Sci-Fi Cinematic VFX & 3D Showreel",
+      "category": "vfx-video",
+      "subcategory": "VFX Compositing",
+      "description": "High-end VFX compositing pipeline including green-screen keying, 3D holographic HUD integration, camera tracking, and cinematic color grading in DaVinci Resolve and Nuke.",
+      "thumbnail": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
       "images": [
         "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&w=1200&q=80"
       ],
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      "tags": ["Cinema 4D", "Octane Render", "Unreal Engine 5", "After Effects", "Houdini"],
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "tags": ["Nuke", "After Effects", "Cinema 4D", "DaVinci Resolve", "Camera Tracking"],
       "client": "Apex Cybernetics Corp",
       "year": "2025",
       "featured": true,
-      "link": "https://behance.net"
+      "rating": 5.0,
+      "link": "https://youtube.com"
     },
     {
       "id": "proj-2",
-      "title": "FinPulse AI - Neomorphic Banking Platform",
-      "category": "ui-ux",
-      "subcategory": "Fintech & Web Apps",
-      "description": "Complete end-to-end UX research, wireframing, design system tokenization, and high-fidelity prototype for an AI-powered global wealth management dashboard. Increased user task completion rate by 42%.",
-      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+      "title": "Royal Heritage - Luxury Wedding Cinematic Film",
+      "category": "vfx-video",
+      "subcategory": "Wedding Films",
+      "description": "Emotional, cinematic wedding film capturing regal moments with 4K drone cinematography, custom sound design, color pacing, and seamless multi-camera transitions.",
+      "thumbnail": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "tags": ["DaVinci Resolve", "Premiere Pro", "Drone 4K", "Cinematic LUTs", "Sound Design"],
+      "client": "Singhania & Roy Royal Weddings",
+      "year": "2025",
+      "featured": true,
+      "rating": 5.0,
+      "link": "https://youtube.com"
+    },
+    {
+      "id": "proj-3",
+      "title": "Elysian Moments - Bespoke Wedding Album Design",
+      "category": "graphics",
+      "subcategory": "Wedding Albums",
+      "description": "Luxury hardcover royal wedding album layout with gold-foil embossing typography, tailored color harmony, and print-ready panoramic spread architecture.",
+      "thumbnail": "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "videoUrl": "",
+      "tags": ["Adobe Photoshop", "InDesign", "Wedding Albums", "Typography", "Print Layout"],
+      "client": "The Oberoi Grand Celebrations",
+      "year": "2025",
+      "featured": true,
+      "rating": 5.0,
+      "link": "https://behance.net"
+    },
+    {
+      "id": "proj-4",
+      "title": "Aura Spatial 3D Web & Interactive Portfolio",
+      "category": "web-dev",
+      "subcategory": "3D Web Apps",
+      "description": "Next-generation 3D WebGL web application with interactive particle mesh, real-time lighting shaders, Supabase cloud synchronization, and responsive glassmorphic UI.",
+      "thumbnail": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "videoUrl": "",
+      "tags": ["Three.js", "WebGL", "HTML5", "CSS3", "JavaScript ES6+", "Supabase"],
+      "client": "Synthetix Cloud Studios",
+      "year": "2025",
+      "featured": true,
+      "rating": 5.0,
+      "link": "https://github.com"
+    },
+    {
+      "id": "proj-5",
+      "title": "Vortex Esports - Key Art & Hoarding Posters",
+      "category": "graphics",
+      "subcategory": "Posters & Branding",
+      "description": "High-octane visual identity, 3D character key art posters, stadium hoardings, live stream overlays, and social media blitz kit for a major esports arena.",
+      "thumbnail": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "videoUrl": "",
+      "tags": ["Adobe Photoshop", "Illustrator", "Cinema 4D", "Poster Art", "Key Visuals"],
+      "client": "Vortex Gaming Arena",
+      "year": "2024",
+      "featured": false,
+      "rating": 5.0,
+      "link": "https://behance.net"
+    },
+    {
+      "id": "proj-6",
+      "title": "Apex HyperDrive - Commercial Teaser & 3D Animation",
+      "category": "vfx-video",
+      "subcategory": "Teasers & Cinematic",
+      "description": "3D automotive commercial teaser with raytraced reflections, procedural smoke simulations, dynamic camera transitions, and explosive bass sound design.",
+      "thumbnail": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+      ],
+      "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "tags": ["Blender 4.0", "Unreal Engine 5", "After Effects", "Automotive CGI", "Raytracing"],
+      "client": "HyperDrive Motors",
+      "year": "2025",
+      "featured": true,
+      "rating": 5.0,
+      "link": "https://youtube.com"
+    },
+    {
+      "id": "proj-7",
+      "title": "Nova Global - Neomorphic UI/UX SaaS Platform",
+      "category": "web-dev",
+      "subcategory": "UI/UX & Figma",
+      "description": "Comprehensive UI/UX design system, dark-mode dashboard architecture, micro-gesture specs, and interactive Figma prototypes for global wealth tracking.",
+      "thumbnail": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
       "images": [
         "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80"
       ],
       "videoUrl": "",
-      "tags": ["Figma", "Design Systems", "UX Research", "Micro-Interactions", "Prototyping"],
-      "client": "FinPulse Global Labs",
-      "year": "2024",
-      "featured": true,
-      "link": "https://dribbble.com"
-    },
-    {
-      "id": "proj-3",
-      "title": "Quantum Dynamics Brand Identity & Packaging",
-      "category": "graphics",
-      "subcategory": "Branding & Typography",
-      "description": "Comprehensive brand architecture, custom geometric typography, 3D foil-stamped luxury packaging design, and visual brand guidelines for an innovative quantum computing hardware enterprise.",
-      "thumbnail": "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=800&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80"
-      ],
-      "videoUrl": "",
-      "tags": ["Adobe Illustrator", "Photoshop", "Brand Identity", "Luxury Packaging", "Custom Typography"],
-      "client": "Quantum Dynamics Inc.",
-      "year": "2025",
-      "featured": true,
-      "link": "https://behance.net"
-    },
-    {
-      "id": "proj-4",
-      "title": "Synthetix Cloud - Interactive 3D Web Application",
-      "category": "web-dev",
-      "subcategory": "Full-Stack & Three.js",
-      "description": "High-performance full-stack web application featuring real-time WebGL 3D data visualization, Supabase database integration, authentication, and responsive glassmorphic UI.",
-      "thumbnail": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80"
-      ],
-      "videoUrl": "",
-      "tags": ["JavaScript ES6+", "Three.js", "WebGL", "Supabase", "Modern CSS3", "REST APIs"],
-      "client": "Synthetix SaaS",
-      "year": "2025",
-      "featured": true,
-      "link": "https://github.com"
-    },
-    {
-      "id": "proj-5",
-      "title": "Nebula Horizon - Sci-Fi Short Film VFX & Color",
-      "category": "vfx-video",
-      "subcategory": "VFX & Compositing",
-      "description": "Full VFX pipeline supervision including camera tracking, green screen keying, CGI spacecraft integration, pyro simulations, sound design sync, and Davinci Resolve cinematic color grading.",
-      "thumbnail": "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=800&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80"
-      ],
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      "tags": ["DaVinci Resolve", "Nuke", "After Effects", "Blender VFX", "Color Grading"],
-      "client": "Solaris Film Studios",
+      "tags": ["Figma", "UI/UX", "Design Systems", "Prototyping", "Micro-Interactions"],
+      "client": "Nova FinTech Labs",
       "year": "2024",
       "featured": false,
-      "link": "https://youtube.com"
-    },
-    {
-      "id": "proj-6",
-      "title": "Vortex Esports - Gaming Festival Visual Identity",
-      "category": "graphics",
-      "subcategory": "Event & Poster Art",
-      "description": "High-octane visual identity, 3D character key art posters, live stream overlays, merchandise apparel, and social media blitz kit for an international 100K-attendee esports tournament.",
-      "thumbnail": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80"
-      ],
-      "videoUrl": "",
-      "tags": ["Photoshop", "Cinema 4D", "Key Visuals", "Stream Overlays", "Merchandise"],
-      "client": "Vortex Gaming Arena",
-      "year": "2024",
-      "featured": false,
-      "link": "https://behance.net"
-    },
-    {
-      "id": "proj-7",
-      "title": "Aura Smart Watch OS - Wearable Design System",
-      "category": "ui-ux",
-      "subcategory": "Mobile & Wearables",
-      "description": "Next-generation spatial wearable UI architecture with micro-gesture interactions, dynamic health rings, biometric visualizers, and battery-efficient OLED dark mode themes.",
-      "thumbnail": "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80",
-      "images": [
-        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=1200&q=80"
-      ],
-      "videoUrl": "",
-      "tags": ["Figma", "WatchOS", "Micro-Interactions", "OLED Design", "Motion Specs"],
-      "client": "Aura Technologies",
-      "year": "2025",
-      "featured": false,
+      "rating": 5.0,
       "link": "https://dribbble.com"
     },
     {
       "id": "proj-8",
-      "title": "HyperDrive Commercial - Dynamic Automotive 3D Reel",
-      "category": "3d-vfx",
-      "subcategory": "Automotive 3D & CGI",
-      "description": "High-fidelity photorealistic CGI automotive reveal commercial. Complex car paint shaders, raytraced wet asphalt reflections, volumetric lighting, and camera motion design.",
-      "thumbnail": "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80",
+      "title": "Viral Creator - High-CTR YouTube Thumbnail & Branding",
+      "category": "graphics",
+      "subcategory": "YouTube Thumbnails",
+      "description": "High-conversion, click-through-optimized YouTube thumbnail packages with custom facial retouching, vibrant lighting glows, 3D text extrusions, and channel packaging.",
+      "thumbnail": "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80",
       "images": [
-        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
+        "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?auto=format&fit=crop&w=1200&q=80"
       ],
-      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
-      "tags": ["Blender 4.0", "Unreal Engine 5", "Automotive CGI", "Raytracing", "Premiere Pro"],
-      "client": "HyperDrive Electric Motors",
+      "videoUrl": "",
+      "tags": ["Photoshop", "Lightroom", "Thumbnails", "High CTR", "Color Grading"],
+      "client": "Top 10 Creator Channels",
       "year": "2025",
       "featured": true,
+      "rating": 5.0,
       "link": "https://behance.net"
     }
   ],
   "services": [
     {
       "id": "serv-1",
-      "title": "3D Motion Graphics & CGI Visuals",
-      "category": "3d-vfx",
-      "icon": "fa-cube",
-      "description": "Cinematic 3D product animations, broadcast packaging, title sequences, holographic VFX, and procedural particle simulations built to elevate your brand presence.",
-      "features": [
-        "Cinema 4D & Octane / Redshift Rendering",
-        "Photorealistic 3D Product Animations",
-        "Holographic & HUD Sci-Fi Visuals",
-        "Cinematic Lighting & Material Shading",
-        "Commercial & Broadcast Ready Output"
+      "title": "Brand Identity & Graphics Design",
+      "category": "graphics",
+      "icon": "fa-bezier-curve",
+      "description": "Bespoke brand identities, viral YouTube thumbnails, hoardings, posters, logos, and luxury wedding album designing built for maximum emotional and visual impact.",
+      "banners": [
+        "https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80"
       ],
-      "startingPrice": "₹15,000 / $250",
-      "deliveryTime": "3 - 7 Days",
-      "whatsappPrefill": "Hi Sonu, I'm interested in your 3D Motion Graphics & CGI service. Let's discuss my project details!"
+      "features": [
+        "Viral High-CTR YouTube Thumbnails",
+        "Luxury Wedding Album Designing & Print Layouts",
+        "Posters, Hoardings & Key Art Visuals",
+        "Full Logo & Brand Identity Guidelines",
+        "Vector & Print-Ready Deliverables (AI, PSD, PDF)"
+      ],
+      "startingPrice": "₹8,000 / $120",
+      "deliveryTime": "2 - 4 Days",
+      "whatsappPrefill": "Hi Sonu, I need professional Brand Identity & Graphic Design (Thumbnails, Posters, Albums, Logos). Let's discuss my project!"
     },
     {
       "id": "serv-2",
-      "title": "UI/UX & Product Design Systems",
-      "category": "ui-ux",
+      "title": "Interactive 3D Web Experiences & UI/UX Design",
+      "category": "web-dev",
       "icon": "fa-layer-group",
-      "description": "Human-centric, modern, and high-converting user interfaces for SaaS web apps, mobile apps, and design systems with interactive Figma prototypes.",
-      "features": [
-        "Complete Wireframing & User Journey",
-        "Figma Interactive Prototyping & Tokens",
-        "Design Systems & Component Libraries",
-        "Micro-Interactions & Animation Specs",
-        "Developer-Ready Handoff & Assets"
+      "description": "High-converting, responsive 3D web applications, landing pages, interactive Three.js canvases, and intuitive Figma UI/UX design systems with Supabase cloud backend.",
+      "banners": [
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80"
       ],
-      "startingPrice": "₹12,000 / $200",
-      "deliveryTime": "4 - 10 Days",
-      "whatsappPrefill": "Hi Sonu, I need modern UI/UX design for my web/mobile application. Can you provide a quote?"
+      "features": [
+        "Interactive 3D WebGL / Three.js Visuals",
+        "Modern Responsive HTML5 / CSS3 / Vanilla JS",
+        "Figma UI/UX Prototypes & Design Systems",
+        "Supabase Realtime Cloud Integration & Admin CMS",
+        "Lightning Fast Load Speeds & SEO Optimization"
+      ],
+      "startingPrice": "₹15,000 / $220",
+      "deliveryTime": "4 - 8 Days",
+      "whatsappPrefill": "Hi Sonu, I want to build an Interactive 3D Web Experience / UI/UX Design with Admin CMS. Can you share details?"
     },
     {
       "id": "serv-3",
-      "title": "Brand Identity & Graphic Artistry",
-      "category": "graphics",
-      "icon": "fa-bezier-curve",
-      "description": "Distinctive visual branding, custom typography, luxury packaging, event posters, marketing collaterals, and high-impact social media creatives.",
-      "features": [
-        "Logo Design & Full Brand Guidelines",
-        "Custom Typography & Vector Illustrations",
-        "3D Packaging & Label Mockups",
-        "Marketing Banners & Social Kits",
-        "Vector Source Files (AI, EPS, SVG, PDF)"
-      ],
-      "startingPrice": "₹8,000 / $120",
-      "deliveryTime": "2 - 5 Days",
-      "whatsappPrefill": "Hi Sonu, I'm looking for a complete Brand Identity & Graphic Design package for my brand."
-    },
-    {
-      "id": "serv-4",
-      "title": "Modern Web & Interactive Development",
-      "category": "web-dev",
-      "icon": "fa-code",
-      "description": "Ultra-fast, responsive, zero-bloat modern websites, landing pages, and interactive 3D WebGL portfolios with Supabase cloud backend integration.",
-      "features": [
-        "Responsive Modern HTML5/CSS3/ES6+ JavaScript",
-        "Interactive 3D Canvas & WebGL Visuals",
-        "Supabase Database & Realtime Cloud Integration",
-        "No-Code Admin CMS & WhatsApp Automation",
-        "SEO Optimization & Free Live Hosting Setup"
-      ],
-      "startingPrice": "₹18,000 / $300",
-      "deliveryTime": "5 - 12 Days",
-      "whatsappPrefill": "Hi Sonu, I want to build a high-performance modern website/portfolio with an admin CMS."
-    },
-    {
-      "id": "serv-5",
-      "title": "Cinematic VFX & Video Editing",
+      "title": "Cinematic Video Editing, 2D & 3D Animation & Motion Graphics",
       "category": "vfx-video",
       "icon": "fa-film",
-      "description": "Story-driven video editing, cinematic color grading, green screen compositing, sound design, and promotional trailers for YouTube, reels, and ads.",
-      "features": [
-        "DaVinci Resolve Pro Color Grading",
-        "Advanced Green Screen & CGI Compositing",
-        "Pacing & Sound Design Synchronization",
-        "Reels, Shorts & High-Impact Ad Formats",
-        "4K UHD High-Bitrate Export"
+      "description": "Story-driven cinematic video editing, royal wedding films, Hollywood-grade VFX compositing, green screen cleanup, 2D/3D animation, and commercial teasers.",
+      "banners": [
+        "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
       ],
-      "startingPrice": "₹10,000 / $150",
-      "deliveryTime": "2 - 5 Days",
-      "whatsappPrefill": "Hi Sonu, I have video footage that needs cinematic editing, VFX, and professional color grading."
-    },
-    {
-      "id": "serv-6",
-      "title": "Full Creative Direction Consultation",
-      "category": "consulting",
-      "icon": "fa-compass",
-      "description": "One-on-one strategic creative direction to help brands conceptualize campaigns, revamp design language, and optimize digital conversion funnels.",
       "features": [
-        "Brand Audit & Visual Strategy Roadmap",
-        "Creative Campaign Moodboards",
-        "Tech Stack & Design System Selection",
-        "Live 1-on-1 Strategy Video Sessions",
-        "Actionable Execution Blueprint"
+        "VFX Compositing, Green Screen & Camera Tracking",
+        "Cinematic Wedding Films & Emotional Storytelling",
+        "Commercial Teasers, Reels & 4K Trailers",
+        "2D & 3D Animation & Motion Graphics",
+        "DaVinci Resolve Color Grading & Sound Design"
       ],
-      "startingPrice": "₹6,000 / $90",
-      "deliveryTime": "1 - 3 Days",
-      "whatsappPrefill": "Hi Sonu, I want to book a Creative Direction and Visual Strategy consultation."
+      "startingPrice": "₹12,000 / $180",
+      "deliveryTime": "3 - 6 Days",
+      "whatsappPrefill": "Hi Sonu, I'm looking for Cinematic Video Editing, VFX Compositing, or Wedding Film editing. Let's talk!"
     }
   ],
   "skills": [
-    { "name": "Cinema 4D / Octane Render", "category": "3D & Motion", "level": 95, "icon": "fa-cube" },
-    { "name": "Blender & Unreal Engine 5", "category": "3D & Motion", "level": 90, "icon": "fa-layer-group" },
-    { "name": "After Effects & Motion Graphics", "category": "3D & Motion", "level": 96, "icon": "fa-film" },
-    { "name": "Houdini & Particle FX", "category": "3D & Motion", "level": 82, "icon": "fa-atom" },
-    { "name": "Figma & Design Systems", "category": "UI/UX Design", "level": 98, "icon": "fa-figma" },
-    { "name": "UI/UX Research & Wireframing", "category": "UI/UX Design", "level": 92, "icon": "fa-sitemap" },
-    { "name": "Micro-Interactions & Prototyping", "category": "UI/UX Design", "level": 94, "icon": "fa-wand-magic-sparkles" },
-    { "name": "Adobe Illustrator & Branding", "category": "Graphics Design", "level": 97, "icon": "fa-bezier-curve" },
-    { "name": "Photoshop & Digital Matte Painting", "category": "Graphics Design", "level": 96, "icon": "fa-palette" },
-    { "name": "Luxury Packaging & Print", "category": "Graphics Design", "level": 88, "icon": "fa-box-open" },
-    { "name": "JavaScript (ES6+) & WebGL", "category": "Web Development", "level": 92, "icon": "fa-code" },
-    { "name": "HTML5 / Modern CSS3 / Glassmorphism", "category": "Web Development", "level": 98, "icon": "fa-laptop-code" },
-    { "name": "Supabase Cloud & REST APIs", "category": "Web Development", "level": 90, "icon": "fa-database" },
-    { "name": "DaVinci Resolve Color Grading", "category": "VFX & Video", "level": 94, "icon": "fa-sliders" },
-    { "name": "Premiere Pro & Commercial Editing", "category": "VFX & Video", "level": 95, "icon": "fa-video" },
-    { "name": "Nuke & VFX Compositing", "category": "VFX & Video", "level": 86, "icon": "fa-vr-cardboard" }
+    { "name": "Nuke & VFX Compositing", "category": "VFX & Video", "level": 96, "icon": "fa-vr-cardboard" },
+    { "name": "DaVinci Resolve Color Grading", "category": "VFX & Video", "level": 95, "icon": "fa-sliders" },
+    { "name": "Premiere Pro & Wedding Films", "category": "VFX & Video", "level": 97, "icon": "fa-video" },
+    { "name": "After Effects & Motion Graphics", "category": "VFX & Video", "level": 98, "icon": "fa-film" },
+    { "name": "Adobe Photoshop & Matte Painting", "category": "Graphics & Design", "level": 99, "icon": "fa-palette" },
+    { "name": "Wedding Album Designing", "category": "Graphics & Design", "level": 96, "icon": "fa-book-open" },
+    { "name": "Adobe Illustrator & Branding", "category": "Graphics & Design", "level": 95, "icon": "fa-bezier-curve" },
+    { "name": "Viral YouTube Thumbnails", "category": "Graphics & Design", "level": 98, "icon": "fa-image" },
+    { "name": "Cinema 4D & Octane Render", "category": "3D & Animation", "level": 92, "icon": "fa-cube" },
+    { "name": "Blender & Unreal Engine 5", "category": "3D & Animation", "level": 88, "icon": "fa-layer-group" },
+    { "name": "2D & 3D Character Motion", "category": "3D & Animation", "level": 90, "icon": "fa-person-running" },
+    { "name": "HTML5 / Modern CSS3 / Glassmorphism", "category": "Web & 3D", "level": 98, "icon": "fa-laptop-code" },
+    { "name": "JavaScript (ES6+) & Three.js", "category": "Web & 3D", "level": 92, "icon": "fa-code" },
+    { "name": "Figma UI/UX & Design Systems", "category": "Web & 3D", "level": 94, "icon": "fa-figma" },
+    { "name": "Supabase Cloud & REST APIs", "category": "Web & 3D", "level": 90, "icon": "fa-database" }
   ],
   "experience": [
     {
       "id": "exp-1",
-      "role": "Lead Creative Technologist & 3D Director",
-      "company": "Vortex Motion Labs (Remote / Global)",
-      "period": "2023 - Present",
-      "description": "Directing 3D motion design pipelines, commercial CGI spot production, brand visual identity transformations, and interactive WebGL experiences for global tech clients.",
+      "role": "VFX Associate & Senior Visual Creative",
+      "company": "Cinematic Vision Studios (Kolkata & Remote)",
+      "period": "2022 - Present",
+      "description": "Leading VFX compositing pipelines, green screen keying, camera tracking, cinematic wedding films, commercial teaser editing, and 3D web visuals for premium clients across India and globally.",
       "highlights": [
-        "Directed over 40+ high-profile commercial 3D spots and web experiences",
-        "Established unified design token system saving 35% engineering handoff time",
-        "Pioneered real-time 3D web asset pipeline using Three.js & GLTF optimization"
+        "Delivered 150+ high-end cinematic edits, wedding films, and VFX sequences",
+        "Designed award-winning royal wedding albums and promotional graphics",
+        "Pioneered interactive 3D WebGL portfolio pipelines with zero framework bloat"
       ]
     },
     {
       "id": "exp-2",
-      "role": "Senior UI/UX & Visual Designer",
-      "company": "Nexus Interactive Studio",
-      "period": "2021 - 2023",
-      "description": "Spearheaded UI/UX architecture for enterprise SaaS dashboards, fintech platforms, and mobile apps. Collaborated closely with frontend developers for pixel-perfect delivery.",
+      "role": "Lead Video Editor & Motion Graphics Artist",
+      "company": "Aura Media Productions",
+      "period": "2020 - 2022",
+      "description": "Supervised video post-production, commercial ads, multi-camera wedding highlights, DaVinci Resolve color grading, and high-CTR social media visual assets.",
       "highlights": [
-        "Redesigned flagship FinTech app resulting in 1.2M+ active monthly users",
-        "Conducted 50+ user testing sessions and developed complete Figma component libraries"
+        "Cut and graded 80+ wedding films and commercial trailers",
+        "Achieved 100% on-time delivery rate with 5.0 client feedback"
       ]
     },
     {
       "id": "exp-3",
-      "role": "VFX Artist & Senior Video Editor",
-      "company": "Cinematek Media Productions",
-      "period": "2019 - 2021",
-      "description": "Supervised video post-production, green screen compositing, cinematic color grading, 3D particle simulations, and broadcast motion graphic packages.",
-      "highlights": [
-        "Delivered 120+ commercial video edits and musical VFX sequences",
-        "Achieved 100% on-time turnaround rate for high-stakes broadcast deadlines"
-      ]
-    },
-    {
-      "id": "exp-4",
-      "role": "Freelance Brand & Graphics Designer",
+      "role": "Freelance Graphic Designer & VFX Creator",
       "company": "Independent Studio",
-      "period": "2018 - 2019",
-      "description": "Collaborated with startups and local brands worldwide to craft bespoke logos, packaging, promotional posters, and social media marketing assets.",
+      "period": "2019 - 2020",
+      "description": "Partnered with top content creators, wedding photographers, and studios for YouTube thumbnail packaging, wedding album layouts, and brand visual identities.",
       "highlights": [
-        "Crafted 60+ full brand identity kits with 99% client satisfaction rating"
+        "Crafted 300+ viral thumbnails and luxury album layouts",
+        "Helped creator channels reach over 2M+ collective views"
       ]
     }
   ],
   "reviews": [
     {
       "id": "rev-1",
-      "name": "Alexander Wright",
-      "role": "Chief Marketing Officer",
-      "company": "Apex Cybernetics Corp",
+      "name": "Rajiv Singhania",
+      "role": "Director",
+      "company": "Singhania Celebrations",
       "avatar": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
       "rating": 5,
-      "text": "Sonu is an absolute visionary! The 3D holographic title showreel he delivered exceeded our highest expectations. His attention to lighting, futuristic shaders, and timing is world-class.",
-      "project": "CyberMatrix 3D Holographic Showreel",
+      "text": "Sonu is a master of his craft! The cinematic wedding film and royal album he created for our destination wedding left everyone spellbound. His VFX touch, color grading, and timing are world class.",
+      "project": "Royal Heritage - Luxury Wedding Cinematic Film",
       "approved": true
     },
     {
       "id": "rev-2",
-      "name": "Elena Rostova",
-      "role": "Head of Product",
-      "company": "FinPulse Global",
+      "name": "Pooja Verma",
+      "role": "Creative Producer",
+      "company": "Apex Cybernetics Corp",
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
       "rating": 5,
-      "text": "Working with Sonu transformed our fintech product. His UX wireframes, micro-interactions, and Figma design system are breathtaking. Our user engagement soared immediately.",
-      "project": "FinPulse AI Banking Platform",
+      "text": "Sonu’s VFX compositing and 3D sci-fi sequences look like they belong in a multi-million-dollar Hollywood teaser. His eye for detail and fast delivery made our launch a viral success.",
+      "project": "CyberMatrix - Sci-Fi Cinematic VFX & 3D Showreel",
       "approved": true
     },
     {
       "id": "rev-3",
-      "name": "Marcus Vance",
-      "role": "Film Producer",
-      "company": "Solaris Film Studios",
+      "name": "Vikram Sen",
+      "role": "YouTuber & Content Creator",
+      "company": "Sen Media Hub",
       "avatar": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80",
       "rating": 5,
-      "text": "Sonu's VFX compositing and color grading work on our sci-fi short film gave it a multi-million-dollar cinematic look. Fast turnaround, crisp communication, and incredible artistry.",
-      "project": "Nebula Horizon Sci-Fi VFX",
+      "text": "The YouTube thumbnails and branding Sonu produced doubled our click-through rate in just one week. He understands visual psychology and lighting better than anyone I've worked with.",
+      "project": "Viral Creator - High-CTR YouTube Thumbnail & Branding",
       "approved": true
     },
     {
       "id": "rev-4",
-      "name": "Priya Sharma",
-      "role": "Founder & CEO",
-      "company": "Quantum Dynamics Inc.",
+      "name": "Ananya Roy",
+      "role": "Founder",
+      "company": "Synthetix Cloud Labs",
       "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
       "rating": 5,
-      "text": "From luxury packaging to our complete brand guidelines, Sonu gave our quantum hardware company an unmatched aura of prestige and elegance. Highly recommended!",
-      "project": "Quantum Dynamics Brand Identity",
+      "text": "Sonu designed our 3D interactive web application and connected Supabase realtime synchronization flawlessly. Highly recommended for anyone wanting a truly top-tier digital presence!",
+      "project": "Aura Spatial 3D Web & Interactive Portfolio",
       "approved": true
     }
   ],
   "inquiries": [
     {
       "id": "inq-101",
-      "name": "Rohan Sen",
-      "email": "rohan@techscale.io",
+      "name": "Vikram Mehra",
+      "email": "vikram@royaldestinations.in",
       "phone": "+91 9830112233",
-      "service": "Modern Web & Interactive Development",
-      "budget": "₹25,000 - ₹50,000",
-      "timeline": "2 Weeks",
-      "message": "We need a futuristic 3D WebGL landing page and Supabase dashboard for our AI SaaS startup. Let's connect on WhatsApp.",
+      "service": "Cinematic Video Editing, 2D & 3D Animation & Motion Graphics",
+      "budget": "₹25,000 - ₹60,000 / $350 - $800",
+      "timeline": "Standard (1 - 2 Weeks)",
+      "message": "We need complete cinematic video editing and color grading for an upcoming 3-day royal destination wedding in Udaipur. Please connect on WhatsApp.",
       "status": "New",
-      "date": "2026-08-28 14:30"
+      "date": "2026-09-08 15:45"
     }
   ],
   "settings": {
+    "masterPin": "2558",
     "currentTheme": "cyber-dark",
     "primaryColor": "#6366f1",
     "accentColor": "#06b6d4",
     "secondaryColor": "#ec4899",
-    "masterPin": "2558",
     "particleSpeed": 0.8,
     "particleCount": 80,
-    "enableSoundFX": false,
-    "heroMode": "dynamic-showcase"
+    "enableSoundFX": false
   }
 }
