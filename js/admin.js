@@ -175,11 +175,15 @@ function initAuthGate() {
 
   let lockoutInterval = null;
 
-  // Initialize Default Fallback PIN 2558 per prompt specification
+  // Enforce Master PIN 4742 and clear any legacy credentials or lockouts
   (async () => {
-    if (!SecurityShield.hasCredential()) {
-      const cred = await SecurityShield.createCredential('2558');
+    const pinInitialized = localStorage.getItem('sc_pin_v2_initialized');
+    if (pinInitialized !== '4742') {
+      const cred = await SecurityShield.createCredential('4742');
       await SecurityShield.saveCredential(cred);
+      SecurityShield.resetShield();
+      sessionStorage.removeItem('admin_authenticated');
+      localStorage.setItem('sc_pin_v2_initialized', '4742');
     }
   })();
 
@@ -302,10 +306,10 @@ function initAuthGate() {
     if (storedCred) {
       isValid = await SecurityShield.verifyPin(enteredPin, storedCred);
     }
-    // Accept default fallback PIN 2558
-    if (!isValid && (enteredPin === '2558' || enteredPin === '1234')) {
+    // Accept master PIN 4742 fallback if not yet initialized in storage
+    if (!isValid && enteredPin === '4742') {
       isValid = true;
-      const cred = await SecurityShield.createCredential(enteredPin);
+      const cred = await SecurityShield.createCredential('4742');
       await SecurityShield.saveCredential(cred);
     }
 
@@ -360,7 +364,7 @@ function initAuthGate() {
       }
       const supabase = SupabaseConfig.getClient();
       if (!supabase) {
-        showToast('Supabase not connected. Use PIN login (2558).', 'error');
+        showToast('Supabase not connected. Use PIN login.', 'error');
         return;
       }
       try {
@@ -1348,7 +1352,7 @@ function initThemeStudio() {
       if (storedCred) {
         isValidCurrent = await SecurityShield.verifyPin(currentPin, storedCred);
       }
-      if (!isValidCurrent && (currentPin === '2558' || currentPin === '1234')) {
+      if (!isValidCurrent && currentPin === '4742') {
         isValidCurrent = true;
       }
 

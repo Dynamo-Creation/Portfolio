@@ -229,7 +229,7 @@ const DataStore = (() => {
       if (settings && settings.length > 0) {
         const s = settings[0];
         // If cloud contains a salted PIN hash, sync securely to admin storage
-        if (s.master_pin_hash && s.master_pin_hash !== '2558' && s.master_pin_hash.includes(':')) {
+        if (s.master_pin_hash && s.master_pin_hash.includes(':')) {
           if (!localStorage.getItem('sc_admin_pin_credential')) {
             localStorage.setItem('sc_admin_pin_credential', s.master_pin_hash);
           }
@@ -325,6 +325,18 @@ const DataStore = (() => {
     let syncedTables = 0;
 
     try {
+      // 0. Centralized portfolio_data Key-Value Upsert
+      try {
+        const { error: dataErr } = await supabase.from('portfolio_data').upsert({
+          key: 'main_portfolio',
+          data: _data,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'key' });
+        if (!dataErr) syncedTables++;
+      } catch (err) {
+        console.warn('Centralized portfolio_data sync note:', err);
+      }
+
       // 1. Profile Upsert / Update
       if (_data.profile) {
         try {

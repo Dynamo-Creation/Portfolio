@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Admin CMS Dashboard | Sonu Choudhary 3D Portfolio</title>
   
   <!-- Font Awesome CDN -->
@@ -48,7 +51,7 @@
       <!-- PIN Auth Panel -->
       <div id="authPanel-pin" class="auth-form-panel active">
         <p id="pinAuthInstruction" style="font-size: 0.85rem; color: var(--admin-text-muted); text-align: center; margin-bottom: 1.25rem;">
-          Enter your 4-digit Master Security PIN (Default: <strong>2558</strong>):
+          Enter your 4-digit Master Security PIN:
         </p>
         <form id="pinAuthForm">
           <div class="pin-inputs-row">
@@ -593,6 +596,18 @@
                 </button>
               </div>
             </form>
+
+            <div style="margin-top: 1.5rem; padding: 1rem; border-radius: 8px; background: rgba(99, 102, 241, 0.08); border: 1px solid rgba(99, 102, 241, 0.25); font-size: 0.82rem; color: var(--admin-text-secondary); line-height: 1.5;">
+              <strong style="color: #818cf8; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+                <i class="fa-solid fa-circle-info"></i> First Time Setup Notice
+              </strong>
+              If the Diagnostic Test shows <em>"Table 'portfolio_data' not found"</em>:
+              <ol style="margin: 0.5rem 0 0 1.2rem; padding: 0;">
+                <li>Open your <a href="https://supabase.com/dashboard" target="_blank" style="color: #67e8f9; text-decoration: underline;">Supabase Dashboard</a> &rarr; <strong>SQL Editor</strong>.</li>
+                <li>Copy all code from <code>supabase_schema.sql</code> and paste it there.</li>
+                <li>Click <strong>Run</strong>, then return here and click <strong>Diagnostic Test</strong> again!</li>
+              </ol>
+            </div>
           </div>
 
           <!-- Cloud Tools Card -->
@@ -990,9 +1005,9 @@
   <div id="toast-container"></div>
 
   <!-- Core Scripts -->
-  <script src="js/supabase-config.js"></script>
-  <script src="js/data-store.js"></script>
-  <script src="js/data.js"></script>
-  <script src="js/admin.js"></script>
+  <script src="js/supabase-config.js?v=2.1"></script>
+  <script src="js/data-store.js?v=2.1"></script>
+  <script src="js/data.js?v=2.1"></script>
+  <script src="js/admin.js?v=2.1"></script>
 </body>
 </html>

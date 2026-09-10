@@ -117,6 +117,13 @@ const SupabaseConfig = (() => {
 
       if (error && error.code !== 'PGRST116' && error.code !== 'PGRST204') {
         _isConnected = false;
+        const msg = (error.message || '').toLowerCase();
+        if (msg.includes('schema cache') || error.code === 'PGRST205' || error.code === '42P01') {
+          return {
+            success: false,
+            message: "Table 'portfolio_data' not found. Please open Supabase SQL Editor and run 'supabase_schema.sql' to create the tables."
+          };
+        }
         return { success: false, message: `Database error: ${error.message}` };
       }
 
